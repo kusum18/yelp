@@ -1,5 +1,6 @@
 class ReviewType():
     (Good,Moderate,Bad,UA)=range(-1,3) # UA is unassigned
+    
 class Review():
     type = ReviewType;
     reviewId=-1

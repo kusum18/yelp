@@ -9,13 +9,15 @@ from pymongo import MongoClient
 from xlrd import open_workbook,cellname,empty_cell
 from Review import Review,ReviewType
 import json
+from Constants import Constants
 
 class Xls2mongo():
-    FIRST_SHEET = 0
+    const = Constants()
     
     def insert(self,reviews):
         Db = self.client.yelp
-        AnnotatedReviews = Db.AnnotatedReviews;
+        AnnotatedReviews = Db[self.const.ANNOTATED_REVIEWS];
+        
         for review in reviews:
             try:
                 value = json.dumps(review, default=lambda x:x.__dict__)
@@ -63,7 +65,7 @@ class Xls2mongo():
         print "Working on..",file
         try:
             book = open_workbook(file)
-            sheet = book.sheet_by_index(self.FIRST_SHEET)
+            sheet = book.sheet_by_index(self.const.FIRST_SHEET)
             nrows = sheet.nrows
             reviews = []
             for row in range(2,nrows):
@@ -75,7 +77,7 @@ class Xls2mongo():
         
     def __init__(self):
         self.config = MongoConf();
-        self.client = MongoClient(self.config.host)
+        self.client = MongoClient(self.const.host)
         numberOfFiles = len(sys.argv)
         try:
             for index in range(1,numberOfFiles):
