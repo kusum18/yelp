@@ -10,10 +10,10 @@ class Stage2():
     const = Constants()
     
     def loadStopWords(self):
-        self.stop_words = re.split('\s+',file(self.const.STOP_WORDS_FILE).read().lower())
+        self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
     
     def processReview(self,review):
-        punctuation = re.compile(r'[-.?,\'"%:;()|0-9]')  # [-.?!,":;()|0-9]'
+        punctuation = re.compile(r'[-.?,\'"%:#&+/=;()|0-9]')  # [-.?!,":;()|0-9]'
         review_text = review["review"]
         review_text = punctuation.sub("",review_text)  # Removing punctuations
         tokens = nltk.word_tokenize(review_text) # review_text.split(" ")
@@ -28,9 +28,9 @@ class Stage2():
         
     def loadTable(self,table):
         try:
-            DB = self.client[self.const.YELP_MONGO_DB];
-            srcCollection = DB[self.const.ANNOTATED_REVIEWS]
-            destCollection = DB[self.const.ANNOTATED_REVIEWS_WO_STOPWORDS]
+            DB = self.client[self.const.DB_YELP_MONGO];
+            srcCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS]
+            destCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS]
             reviews = []
             for review in srcCollection.find():
                 review['review'] = self.processReview(review)
@@ -39,8 +39,8 @@ class Stage2():
         except:
             print "LoadTable Error:",sys.exc_info()
     def __init__(self):
-        self.client = MongoClient(self.const.host);
+        self.client = MongoClient(self.const.Mongo_Host);
         self.loadStopWords()
-        self.loadTable(self.const.ANNOTATED_REVIEWS)
+        self.loadTable(self.const.COLLECTION_ANNOTATED_REVIEWS)
         
 obj = Stage2();

@@ -15,8 +15,8 @@ class Xls2mongo():
     const = Constants()
     
     def insert(self,reviews):
-        Db = self.client.yelp
-        AnnotatedReviews = Db[self.const.ANNOTATED_REVIEWS];
+        Db = self.client[self.const.DB_YELP_MONGO]
+        AnnotatedReviews = Db[self.const.COLLECTION_ANNOTATED_REVIEWS];
         
         for review in reviews:
             try:
@@ -77,7 +77,7 @@ class Xls2mongo():
         
     def __init__(self):
         self.config = MongoConf();
-        self.client = MongoClient(self.const.host)
+        self.client = MongoClient(self.const.Mongo_Host)
         numberOfFiles = len(sys.argv)
         try:
             for index in range(1,numberOfFiles):
