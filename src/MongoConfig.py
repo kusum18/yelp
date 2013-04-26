@@ -8,7 +8,7 @@ class MongoConf():
     def conf(self):
         self.host = "localhost"
         self.port = ""
-        self.database = "yelp"
+        self.database = "yelpd"
         self.collection = "AnnotatedReviews"
     
     def _init__(self,host):
