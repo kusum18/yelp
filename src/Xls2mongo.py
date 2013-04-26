@@ -17,7 +17,6 @@ class Xls2mongo():
     def insert(self,reviews):
         Db = self.client[self.const.DB_YELP_MONGO]
         AnnotatedReviews = Db[self.const.COLLECTION_ANNOTATED_REVIEWS];
-        
         for review in reviews:
             try:
                 value = json.dumps(review, default=lambda x:x.__dict__)
@@ -32,8 +31,7 @@ class Xls2mongo():
             return type.UA;
         else:
             return value
-        
-    
+
     def processReviewXls(self,sheet,row):
         review = Review()
         start_col = 0
@@ -41,6 +39,7 @@ class Xls2mongo():
         for col in range(start_col,end_col):
             if(col==0):
                 review.reviewId = sheet.cell_value(row,col)
+                #self.checkIfValidReview(review.reviewId)
             elif(col==1):
                 review.review = sheet.cell_value(row,col);
             elif(col==2):
@@ -74,7 +73,16 @@ class Xls2mongo():
             return reviews
         except:
             print "error",sys.exc_info()
-        
+    
+    def checkIfValidReview(self, review_id):
+        db = self.client[self.const.DB_YELP_MONGO]
+        reviewCollection = db.review
+        entry = reviewCollection.find_one({'review_id':review_id})
+        if entry:
+            print ("entry found", entry)
+        else:
+            print("not found", entry)
+
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>
         self.config = MongoConf();
@@ -89,7 +97,5 @@ class Xls2mongo():
                     self.insert(reviews)
         except:
             pass
-        
-        
 obj = Xls2mongo();
 
