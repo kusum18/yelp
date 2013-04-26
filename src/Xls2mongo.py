@@ -84,6 +84,7 @@ class Xls2mongo():
             print("not found", entry)
 
     def __init__(self):
+        #usage python Xls2mongo.py <file1> <file2>
         self.config = MongoConf();
         self.client = MongoClient(self.const.Mongo_Host)
         numberOfFiles = len(sys.argv)
