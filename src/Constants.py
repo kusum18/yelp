@@ -6,9 +6,10 @@ class Constants():
     COLLECTION_UNIGRAMS = "Unigrams"
     COLLECTION_TEMP_BIGRAMS = "BIGRAMS_WO_COUNT"
     COLLECTION_BIGRAMS = "Bigrams"
-    DB_YELP_MONGO = "yelp"
+    DB_YELP_MONGO = "yelpd"
     FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
     Mongo_Host = "localhost"
+    EXT_EXCEL = ".xlsx" 
     
     #Numbers
     FIRST_SHEET = 0

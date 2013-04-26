@@ -8,7 +8,7 @@ from MongoConfig import MongoConf;
 from pymongo import MongoClient
 from xlrd import open_workbook,cellname,empty_cell
 from Review import Review,ReviewType
-import json
+import json,os
 from Constants import Constants
 
 class Xls2mongo():
@@ -79,11 +79,14 @@ class Xls2mongo():
         #usage python Xls2mongo.py <file1> <file2>
         self.config = MongoConf();
         self.client = MongoClient(self.const.Mongo_Host)
-        numberOfFiles = len(sys.argv)
+        #numberOfFiles = len(sys.argv)
+        destinationPath = sys.argv[1]
         try:
-            for index in range(1,numberOfFiles):
-                reviews=self.start(sys.argv[index])
-                self.insert(reviews)
+            for file in os.listdir(destinationPath):
+                if file.endswith(self.const.EXT_EXCEL):
+                    file_path = os.path.join(destinationPath,file)
+                    reviews=self.start(file_path)
+                    self.insert(reviews)
         except:
             pass
         
