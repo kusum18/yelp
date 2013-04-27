@@ -20,9 +20,10 @@ class Xls2mongo():
         RejectReviews = Db[self.const.COLLECTION_REJECTED_REVIEWS]
         for review in reviews:
             try:
+                review,isValid = self.checkIfValidReview(review)
                 value = json.dumps(review, default=lambda x:x.__dict__)
                 value = json.loads(value)
-                if self.checkIfValidReview(review.reviewId):
+                if isValid:
                     AnnotatedReviews.insert(value)
                 else:
                     RejectReviews.insert(value);
@@ -78,16 +79,16 @@ class Xls2mongo():
         except:
             print "error",sys.exc_info()
     
-    def checkIfValidReview(self, review_id):
+    def checkIfValidReview(self, review):
         db = self.client[self.const.DB_YELP_MONGO]
         reviewCollection = db[self.const.COLLECTION_REVIEW]
-        entry = reviewCollection.find_one({'review_id':review_id})
+        entry = reviewCollection.find_one({'review_id':review.reviewId})
         if entry:
-            #print ("entry found", entry)
-            return True
+            review.stars = entry['stars']
+            return (review,True)
         else:
             #print("not found", entry)
-            return False
+            return (review, False)
 
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>

@@ -1,3 +1,5 @@
 *.xls*
 *.pyc
 .pydevproject
+.DS_Store
+*.DS_Store

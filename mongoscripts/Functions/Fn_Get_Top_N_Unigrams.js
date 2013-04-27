@@ -12,3 +12,23 @@ var get_Top_N_Unigrams = function (min_threshold){
 	 }
 	 return words;
 }
+
+var removeUnFilledReviews = function(){
+	print('cleaning');
+	db.AnnotatedReviews.find().forEach(function(doc){
+        if (doc['Food']==2 && 
+        	doc['Ambiance']==2 &&
+        	doc['Service']==2 &&
+        	//doc['Location']==2 &&
+        	doc['Deals']==2 &&
+        	doc['Price']==2 ){
+        	db.non_annotated_reviews.insert(doc)
+        	// not annotated. remove
+        }
+        else{
+        	db.annotated_reviews_clean.insert(doc)
+        }
+    });
+    print('non_annotated_reviews and annotated_reviews_clean created' );
+
+}

@@ -13,6 +13,3 @@ class Review():
     Deals=type.UA;
     Price=type.UA;
     Food=type.UA;
-    
-    
-    
