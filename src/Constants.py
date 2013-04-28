@@ -1,8 +1,9 @@
 
 class Constants():
     #Strings
-    COLLECTION_ANNOTATED_REVIEWS="AnnotatedReviews"
+    COLLECTION_ANNOTATED_REVIEWS="annotated_reviews_clean"
     COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS = "Review_no_stopwords"
+    COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS = "Review_no_punctuations"
     COLLECTION_REJECTED_REVIEWS = "Reject_reviews"
     COLLECTION_REVIEW = "review"
     COLLECTION_UNIGRAMS = "Unigrams"

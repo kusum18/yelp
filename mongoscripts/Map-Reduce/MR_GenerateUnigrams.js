@@ -17,7 +17,7 @@ var reduceFunction = function(word,count){
 }
 
 
-db.Review_no_stopwords.mapReduce(
+db.Review_no_punctuations.mapReduce(
                      mapFunction,
                      reduceFunction,
                      { out: "Unigrams" }
