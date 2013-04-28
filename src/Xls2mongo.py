@@ -15,7 +15,7 @@ class Xls2mongo():
     const = Constants()
     
     def insert(self,reviews):
-        Db = self.client[self.const.DB_YELP_MONGO]
+        Db = self.db
         AnnotatedReviews = Db[self.const.COLLECTION_ANNOTATED_REVIEWS];
         RejectReviews = Db[self.const.COLLECTION_REJECTED_REVIEWS]
         for review in reviews:
@@ -44,7 +44,6 @@ class Xls2mongo():
         for col in range(start_col,end_col):
             if(col==0):
                 review.reviewId = sheet.cell_value(row,col)
-                #self.checkIfValidReview(review.reviewId)
             elif(col==1):
                 review.review = sheet.cell_value(row,col);
             elif(col==2):
@@ -80,21 +79,25 @@ class Xls2mongo():
             print "error",sys.exc_info()
     
     def checkIfValidReview(self, review):
-        db = self.client[self.const.DB_YELP_MONGO]
+        db = self.db
         reviewCollection = db[self.const.COLLECTION_REVIEW]
         entry = reviewCollection.find_one({'review_id':review.reviewId})
         if entry:
             review.stars = entry['stars']
             return (review,True)
         else:
-            #print("not found", entry)
             return (review, False)
 
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>
         self.config = MongoConf();
         self.client = MongoClient(self.const.Mongo_Host)
+        self.db = self.client[self.const.DB_YELP_MONGO]
         #numberOfFiles = len(sys.argv)
+        
+    
+    def load(self):
+        print ("loading files to mongo. This will take some time. sit back and relax")
         destinationPath = sys.argv[1]
         try:
             for file in os.listdir(destinationPath):
@@ -105,5 +108,23 @@ class Xls2mongo():
                     self.insert(reviews)
         except:
             print sys.exc_info()
-obj = Xls2mongo();
+        print ("loading files done")
+    def removeUnFilledReviews(self):
+        print("removing unfiled reviews. they will be inserted into non_annotated_reviews collection")
+        docs = self.db[self.const.COLLECTION_ANNOTATED_REVIEWS].find()
+        for doc in docs:
+            if  doc['Food']==2 and \
+                doc['Ambiance']==2 and \
+                doc['Service']==2 and \
+                doc['Deals']==2 and \
+                doc['Price']==2 :
+                    self.db.non_annotated_reviews.insert(doc)
+            else:
+                    self.db.annotated_reviews_clean.insert(doc)
+        print ("non_annotated_reviews and annotated_reviews_clean created.")
+
+
+if __name__ == '__main__':
+    obj = Xls2mongo()
+    obj.load()
 

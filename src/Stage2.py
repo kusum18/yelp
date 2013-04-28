@@ -7,8 +7,7 @@ from Constants import Constants
 #Stage 1 - Each Review be cleaned from Stopwords
 
 class Stage2():
-    const = Constants()
-    
+
     def loadStopWords(self):
         self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
     
@@ -26,10 +25,11 @@ class Stage2():
         review_text = " ".join(tokens)
         return review_text
         
-    def loadTable(self,table):
+    def loadTable(self):
+        print("removing punctuations from reviews, sit back and relax")
         try:
             DB = self.client[self.const.DB_YELP_MONGO];
-            srcCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS]
+            srcCollection = DB.annotated_reviews_clean
             destCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
             reviews = []
             for review in srcCollection.find():
@@ -38,9 +38,13 @@ class Stage2():
             destCollection.insert(reviews)
         except:
             print "LoadTable Error:",sys.exc_info()
+        print(" punctuations removed. new clean reviews are in Review_no_punctuations collection")
     def __init__(self):
+        self.const = Constants()
         self.client = MongoClient(self.const.Mongo_Host);
         #self.loadStopWords()
-        self.loadTable(self.const.COLLECTION_ANNOTATED_REVIEWS)
         
-obj = Stage2();
+
+if __name__ == '__main__':
+    obj = Stage2()
+    obj.loadTable()
