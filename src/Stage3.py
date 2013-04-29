@@ -261,6 +261,32 @@ class Stage3():
                                                 reduce,
                                                 "%s_Trigrams_with_freq"%each_class)
         print ("generating trigrams per class with freq done")
+        
+    
+    def cleanUnigramsStopwords(self,srcCollection,destAcceptCollection,destRejectCollection):
+        try:
+            SWC = self.db[self.const.COLLECTION_STOP_WORDS]
+            
+            swlist = [] # stop word list 
+            for sw in SWC.find():
+                swlist.append(sw['word'])
+            
+            Unigrams = self.db[srcCollection]
+            Unigrams_Accept = self.db[destAcceptCollection]
+            Unigrams_Reject = self.db[destRejectCollection]
+            
+            for unigram in Unigrams.find():
+                try:
+                    word = unigram._id;
+                    if word in swlist:
+                        Unigrams_Reject.insert(unigram)
+                    else:
+                        Unigrams_Accept.insert(unigram)
+                except:
+                    print "Error: Cleaning Unigrams from Stop words. \n Reason: ",sys.exc_info()
+            
+        except:
+            print "Error: Cleaning Unigrams from Stopwords, \n Reason: ",sys.exc_info()
 
 
     def __init__(self):
