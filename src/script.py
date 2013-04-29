@@ -29,7 +29,10 @@ if __name__ == '__main__':
     const = Constants()
     stage2.loadTable()
     elapsed = (time.time() -t1)
-    print "removing punctuations took ",elapsed, "seconds" 
+    print "removing punctuations took ",elapsed, "seconds"
+    print "Loading Stopwords"
+    stage2.loadStopWords()
+    print "Done loading Stopwords" 
     # map reduce to create unigrams mongo 
     stage3 = Stage3()
     # *******Unigrams ************

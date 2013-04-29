@@ -9,6 +9,7 @@ class Constants():
     COLLECTION_UNIGRAMS = "Unigrams"
     COLLECTION_TEMP_BIGRAMS = "BIGRAMS_WO_COUNT"
     COLLECTION_BIGRAMS = "Bigrams"
+    COLLECTION_STOP_WORDS = "Stopwords"
     DB_YELP_MONGO = "yelp"
     FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
     Mongo_Host = "localhost"

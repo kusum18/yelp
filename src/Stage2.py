@@ -9,7 +9,16 @@ from Constants import Constants
 class Stage2():
 
     def loadStopWords(self):
-        self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
+        try:
+            print "Loading Stop words"
+            self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
+            DB = self.client[self.const.DB_YELP_MONGO]
+            collection = DB[self.const.COLLECTION_STOP_WORDS];
+            for word in self.stop_words:
+                collection.insert({"word":word});
+        except:
+            print "Error: Loading Stop words failed. \n Reason: ",sys.exc_info()
+        
     
     def processReview(self,review):
         punctuation = re.compile(r'[-.?,\'"%:#&+/=;()|0-9]')  # [-.?!,":;()|0-9]'
