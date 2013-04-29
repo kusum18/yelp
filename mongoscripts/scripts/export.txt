@@ -1,0 +1,20 @@
+-- Unigrams---
+./mongoexport --db yelp_new --collection Unigrams_with_freq --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/unigrams_freq.csv
+./mongoexport --db yelp_new --collection Food_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Food_Unigrams.csv
+./mongoexport --db yelp_new --collection Service_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Service_Unigrams.csv
+./mongoexport --db yelp_new --collection Price_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Price_Unigrams.csv
+./mongoexport --db yelp_new --collection Ambiance_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Ambience_Unigrams.csv
+./mongoexport --db yelp_new --collection Deal_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Deals_Unigrams.csv
+
+
+-- bigrams----
+
+./mongoexport --db yelp_new --collection Bigrams_With_Freq --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Bigrams_With_Freq.csv
+./mongoexport --db yelp_new --collection Food_Bigrams_with_freq --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Food_Bigrams_with_freq.csv
+./mongoexport --db yelp_new --collection Service_Bigrams_with_freq --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Service_Bigrams_with_freq.csv
+./mongoexport --db yelp_new --collection Price_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Price_Unigrams.csv
+./mongoexport --db yelp_new --collection Ambiance_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Ambience_Unigrams.csv
+./mongoexport --db yelp_new --collection Deal_Unigrams --csv --fieldFile "/Users/vaibhavsaini/Documents/workspace/yelp/mongoscripts/scripts/fields_unigrams.txt" --out /Users/vaibhavsaini/Documents/workspace/yelp/output/Deals_Unigrams.csv
+
+
+
