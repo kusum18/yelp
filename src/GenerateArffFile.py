@@ -111,6 +111,6 @@ class GenerateArff():
         self.generateArffFile(datafeatures)
         
 if __name__=="__main__":
-    arff = GenerateArff();
+    darff = GenerateArff();
     
 
