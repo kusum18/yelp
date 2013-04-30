@@ -21,7 +21,7 @@ class Stage2():
         
     
     def processReview(self,review):
-        punctuation = re.compile(r'[~-.?,\'"%:#&+/=;()|0-9]')  # [-.?!,":;()|0-9]'
+        punctuation = re.compile(r'[-.?,\'"%:#&+/=;~`()|0-9]')  # [-.?!,":;()|0-9]'
         review_text = review["review"]
         review_text = punctuation.sub("",review_text)  # Removing punctuations
         tokens = nltk.word_tokenize(review_text) # review_text.split(" ")
@@ -37,7 +37,7 @@ class Stage2():
     def loadTable(self):
         print("removing punctuations from reviews, sit back and relax")
         try:
-            DB = self.client[self.const.DB_YELP_MONGO];
+            DB = self.db
             srcCollection = DB.annotated_reviews_clean
             destCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
             reviews = []
@@ -51,6 +51,7 @@ class Stage2():
     def __init__(self):
         self.const = Constants()
         self.client = MongoClient(self.const.Mongo_Host);
+        self.db = self.client[self.const.DB_YELP_MONGO];
         #self.loadStopWords()
         
 

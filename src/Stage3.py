@@ -144,6 +144,7 @@ class Stage3():
         self.db.Review_no_punctuations.map_reduce(map, 
                                                  reduce,
                                                  "Unigrams_with_freq")
+        print "clean now"
         self.cleanUnigramsStopwords("Unigrams_with_freq", "Unigrams_with_freq_no_stopwords", "Unigrams_with_freq_withStopwords")
         print ("generating unigrams done")
     
@@ -268,25 +269,21 @@ class Stage3():
         print "removing stop words from ", srcCollection , "and creating ", destAcceptCollection, "and", destRejectCollection
         try:
             SWC = self.db[self.const.COLLECTION_STOP_WORDS]
-            
             swlist = [] # stop word list 
             for sw in SWC.find():
                 swlist.append(sw['word'])
-            
             Unigrams = self.db[srcCollection]
             Unigrams_Accept = self.db[destAcceptCollection]
             Unigrams_Reject = self.db[destRejectCollection]
-            
             for unigram in Unigrams.find():
                 try:
-                    word = unigram._id;
+                    word = unigram['_id'];
                     if word in swlist:
                         Unigrams_Reject.insert(unigram)
                     else:
                         Unigrams_Accept.insert(unigram)
                 except:
                     print "Error: Cleaning Unigrams from Stop words. \n Reason: ",sys.exc_info()
-            
         except:
             print "Error: Cleaning Unigrams from Stopwords, \n Reason: ",sys.exc_info()
         print "stop words removed check ",destAcceptCollection 
@@ -302,3 +299,4 @@ class Stage3():
 
 if __name__ == '__main__':
     obj = Stage3()
+    obj.generateUnigrams()
