@@ -24,7 +24,7 @@ class Stage2():
         punctuation = re.compile(r'[-.?,\'"%:#&+/=;~`()|0-9]')  # [-.?!,":;()|0-9]'
         review_text = review["review"]
         review_text = punctuation.sub("",review_text)  # Removing punctuations
-        tokens = nltk.word_tokenize(review_text) # review_text.split(" ")
+        tokens = review_text.split(" ") # nltk.word_tokenize(review_text)
         tokens = [token for token in tokens]# if not token in self.stop_words]
         #tokens = nltk.word_tokenize()
         # Below line first reads the list of token and then checks against the list of stopwords
