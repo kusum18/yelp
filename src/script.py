@@ -13,9 +13,11 @@ if __name__ == '__main__':
     print "running the script. this will take time."
     startTime = time.time()
     xls2mg = Xls2mongo()
+    print "xls2mg created"
+    xls2mg.dropCollections()
     #load files to mongo
     t1 =time.time()
-    xls2mg.load()
+    #xls2mg.load()
     elapsed = (time.time() -t1)
     print "load took",elapsed, "seconds" 
     # clean up. create non_annotated_reviews and create annotated_reviews_clean
@@ -29,7 +31,10 @@ if __name__ == '__main__':
     const = Constants()
     stage2.loadTable()
     elapsed = (time.time() -t1)
-    print "removing punctuations took ",elapsed, "seconds" 
+    print "removing punctuations took ",elapsed, "seconds"
+    print "Loading Stopwords"
+    stage2.loadStopWords()
+    print "Done loading Stopwords" 
     # map reduce to create unigrams mongo 
     stage3 = Stage3()
     # *******Unigrams ************
@@ -85,7 +90,5 @@ if __name__ == '__main__':
     stage3.genClassWiseTrigramsWithFreq()
     elapsed = (time.time() -t1)
     print "generating trigrams per class with freq took ",elapsed, "seconds"
-    
-    
     elapsed = (time.time() - startTime)/60
     print "Script completed. script took ", elapsed, " minutes"

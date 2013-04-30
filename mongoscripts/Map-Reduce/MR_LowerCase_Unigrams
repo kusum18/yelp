@@ -1,0 +1,21 @@
+// Read each unigram word as token from Mongo Unigram collections
+// map(token.lowercase(),1)
+// Reduce sum of bigrams
+
+
+var mapFunction = function(){
+	unigram_word = this._id.toLowerCase();
+	value = this.value;
+	emit(unigram_word,this.value)
+}
+
+var reduceFunction = function(word,count){
+	return Array.sum(count)
+}
+
+
+db.Unigram.mapReduce(
+                     mapFunction,
+                     reduceFunction,
+                     { out: "Unigram_Lowercase" }
+                   )

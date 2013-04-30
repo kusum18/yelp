@@ -129,7 +129,7 @@ class Stage3():
         print ("generate unigrams from Review_no_punctuations collection...")
         map = Code("""
             function(){
-                review_text = this.review;
+                review_text = this.review.toLowerCase();
                 tokens = review_text.split(" ")
                 tokens.forEach(function(word){ 
                     emit(word,1)
@@ -144,103 +144,44 @@ class Stage3():
         self.db.Review_no_punctuations.map_reduce(map, 
                                                  reduce,
                                                  "Unigrams_with_freq")
-        
+        print "clean now"
+        self.cleanUnigramsStopwords("Unigrams_with_freq", "Unigrams_with_freq_no_stopwords", "Unigrams_with_freq_withStopwords")
         print ("generating unigrams done")
     
     def generateClassWiseUnigrams(self):
         print ("generating class  wise unigrams")
-        food_mapFunction = Code("""
-            function(){
-                if(this.Food==1){
-                    review_text = this.review;
-                    tokens = review_text.split(" ")
-                    tokens.forEach(function(word){ 
-                        emit(word,1)
-                    });
+        classes = ["Food","Service","Ambiance","Deals","Price"]
+        for each_class in classes:
+            mapFunction = Code("""
+                function(){
+                    if(this.%s==1){
+                        review_text = this.review.toLowerCase();
+                        tokens = review_text.split(" ")
+                        tokens.forEach(function(word){ 
+                            emit(word,1)
+                        });
+                    }
                 }
-            }
-        """)
-
-        service_mapFunction = Code("""
-            function(){
-                if(this.Service==1){
-                    review_text = this.review;
-                    tokens = review_text.split(" ")
-                    tokens.forEach(function(word){ 
-                        emit(word,1)
-                    });
+            """%each_class)
+            
+            reduce = Code("""
+                function(word,count){
+                    return Array.sum(count)
                 }
-            }
-        """)
-        ambience_mapFunction = Code("""
-            function(){
-                if(this.Ambiance==1){
-                    review_text = this.review;
-                    tokens = review_text.split(" ")
-                    tokens.forEach(function(word){ 
-                        emit(word,1)
-                    });
-                }
-            }
-        """)
-
-        deal_mapFunction = Code("""
-            function(){
-                if(this.Deals==1){
-                    review_text = this.review;
-                    tokens = review_text.split(" ")
-                    tokens.forEach(function(word){ 
-                        emit(word,1)
-                    });
-                }
-            }
-        """)
-
-        price_mapFunction = Code("""
-            function(){
-                if(this.Price==1){
-                    review_text = this.review;
-                    tokens = review_text.split(" ")
-                    tokens.forEach(function(word){ 
-                        emit(word,1)
-                    });
-                }
-            }
-        """)
-
-
-        reduce = Code("""
-            function(word,count){
-                return Array.sum(count)
-            }
-        """)
-        print("generating unigrams for food")
-        self.db.Review_no_punctuations.map_reduce(food_mapFunction,
-                                                 reduce,
-                                                 "Food_Unigrams")
-        print("generating unigrams for service")
-        self.db.Review_no_punctuations.map_reduce(service_mapFunction,
-                                                  reduce,
-                                                  "Service_Unigrams")
-        print("generating unigrams for Ambiance")
-        self.db.Review_no_punctuations.map_reduce(ambience_mapFunction,
-                                                  reduce,
-                                                  "Ambiance_Unigrams")
-        print("generating unigrams for Deals")
-        self.db.Review_no_punctuations.map_reduce(deal_mapFunction,
-                                                 reduce,
-                                                 "Deal_Unigrams")
-        print("generating unigrams for price")
-        self.db.Review_no_punctuations.map_reduce(price_mapFunction, 
-                                                 reduce,
-                                                 "Price_Unigrams")
+            """)
+            print("generating unigrams for %s"%each_class)
+            self.db.Review_no_punctuations.map_reduce(mapFunction,
+                                                     reduce,
+                                                     "%s_Unigrams"%each_class)
+            self.cleanUnigramsStopwords("%s_Unigrams"%each_class, "%s_Unigrams_no_stopwords"%each_class, "%s_Unigrams_with_stopwords"%each_class)
+            
         print("generating unigrams done")
     
     def genBigramsWithFreq(self):
         print("generating bigrams with frequency")
         map = Code("""
                 function(){
-                    bigram_word = this.word;
+                    bigram_word = this.word.toLowerCase();
                     emit(bigram_word,1)
                 }
             """)
@@ -258,39 +199,25 @@ class Stage3():
     def genClassWiseBigramsWithFreq(self):
         #class wise bigrams
         print("generating bigrams per class with freq now")
-        map = Code("""
-                function(){
-                    bigram_word = this.word;
-                    emit(bigram_word,1)
-                }
-            """)
+        classes = ["Food","Service","Ambiance","Deals","Price"]
+        for each_class in classes:
+            map = Code("""
+                    function(){
+                        bigram_word = this.word.toLowerCase();
+                        emit(bigram_word,1)
+                    }
+                """)
+    
+            reduce = Code("""
+                    function(word,count){
+                        return Array.sum(count)
+                    }
+                """)
 
-        reduce = Code("""
-                function(word,count){
-                    return Array.sum(count)
-                }
-            """)
-
-        print("generating Food bigrams")
-        self.db.Food_bigrams_temp.map_reduce(map,
-                                            reduce,
-                                            "Food_Bigrams_with_freq")
-        print ("generating Service bigrams")
-        self.db.Service_bigrams_temp.map_reduce(map,
-                                               reduce,
-                                               "Service_Bigrams_with_freq")
-        print ("generating Deals bigrams")
-        self.db.Deals_bigrams_temp.map_reduce(map,
-                                             reduce,
-                                             "Deals_Bigrams_with_freq")
-        print ("generating Ambiance bigrams")
-        self.db.Ambiance_bigrams_temp.map_reduce(map,
-                                                 reduce,
-                                                 "Ambiance_Bigrams_with_freq")
-        print ("generating Price bigrams")
-        self.db.Price_bigrams_temp.map_reduce(map,
-                                              reduce,
-                                              "Price_Bigrams_with_freq")
+            print("generating %s bigrams"%each_class)
+            self.db["%s_bigrams_temp"%each_class].map_reduce(map,
+                                                reduce,
+                                                "%s_Bigrams_with_freq"%each_class)
         
         print ("generating bigrams per class with freq done")
 
@@ -298,7 +225,7 @@ class Stage3():
         print("generating trigrams with frequency for combined classes")
         map = Code("""
                 function(){
-                    trigram_word = this.word;
+                    trigram_word = this.word.toLowerCase();
                     emit(trigram_word,1)
                 }
             """)
@@ -316,42 +243,50 @@ class Stage3():
     def genClassWiseTrigramsWithFreq(self):
         #class wise trigrams
         print "generating trigrams per class with freq "
-        map = Code("""
-                function(){
-                    trigram_word = this.word;
-                    emit(trigram_word,1)
-                }
-            """)
-
-        reduce = Code("""
-                function(word,count){
-                    return Array.sum(count)
-                }
-            """)
-
-        print("generating Food trigrams")
-        self.db.Food_trigrams_temp.map_reduce(map,
-                                            reduce,
-                                            "Food_Trigrams_with_freq")
-        print ("generating Service trigrams")
-        self.db.Service_trigrams_temp.map_reduce(map,
-                                               reduce,
-                                               "Service_Trigrams_with_freq")
-        print ("generating Deals trigrams")
-        self.db.Deals_trigrams_temp.map_reduce(map,
-                                             reduce,
-                                             "Deals_Trigrams_with_freq")
-        print ("generating Ambiance trigrams")
-        self.db.Ambiance_trigrams_temp.map_reduce(map,
-                                                 reduce,
-                                                 "Ambiance_Trigrams_with_freq")
-        print ("generating Price trigrams")
-        self.db.Price_trigrams_temp.map_reduce(map,
-                                              reduce,
-                                              "Price_Trigrams_with_freq")
-        
+        classes = ["Food","Service","Ambiance","Deals","Price"]
+        for each_class in classes:
+            map = Code("""
+                    function(){
+                        trigram_word = this.word.toLowerCase();
+                        emit(trigram_word,1)
+                    }
+                """)
+    
+            reduce = Code("""
+                    function(word,count){
+                        return Array.sum(count)
+                    }
+                """)
+    
+            print("generating %s trigrams"%each_class)
+            self.db.Food_trigrams_temp.map_reduce(map,
+                                                reduce,
+                                                "%s_Trigrams_with_freq"%each_class)
         print ("generating trigrams per class with freq done")
-
+        
+    
+    def cleanUnigramsStopwords(self,srcCollection,destAcceptCollection,destRejectCollection):
+        print "removing stop words from ", srcCollection , "and creating ", destAcceptCollection, "and", destRejectCollection
+        try:
+            SWC = self.db[self.const.COLLECTION_STOP_WORDS]
+            swlist = [] # stop word list 
+            for sw in SWC.find():
+                swlist.append(sw['word'])
+            Unigrams = self.db[srcCollection]
+            Unigrams_Accept = self.db[destAcceptCollection]
+            Unigrams_Reject = self.db[destRejectCollection]
+            for unigram in Unigrams.find():
+                try:
+                    word = unigram['_id'];
+                    if word in swlist:
+                        Unigrams_Reject.insert(unigram)
+                    else:
+                        Unigrams_Accept.insert(unigram)
+                except:
+                    print "Error: Cleaning Unigrams from Stop words. \n Reason: ",sys.exc_info()
+        except:
+            print "Error: Cleaning Unigrams from Stopwords, \n Reason: ",sys.exc_info()
+        print "stop words removed check ",destAcceptCollection 
 
     def __init__(self):
         self.client = MongoClient(self.const.Mongo_Host)
@@ -364,3 +299,4 @@ class Stage3():
 
 if __name__ == '__main__':
     obj = Stage3()
+    obj.generateUnigrams()

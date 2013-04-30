@@ -9,10 +9,19 @@ from Constants import Constants
 class Stage2():
 
     def loadStopWords(self):
-        self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
+        try:
+            print "Loading Stop words"
+            self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
+            DB = self.client[self.const.DB_YELP_MONGO]
+            collection = DB[self.const.COLLECTION_STOP_WORDS];
+            for word in self.stop_words:
+                collection.insert({"word":word});
+        except:
+            print "Error: Loading Stop words failed. \n Reason: ",sys.exc_info()
+        
     
     def processReview(self,review):
-        punctuation = re.compile(r'[-.?,\'"%:#&+/=;()|0-9]')  # [-.?!,":;()|0-9]'
+        punctuation = re.compile(r'[-.?,\'"%:#&+/=;~`()|0-9]')  # [-.?!,":;()|0-9]'
         review_text = review["review"]
         review_text = punctuation.sub("",review_text)  # Removing punctuations
         tokens = nltk.word_tokenize(review_text) # review_text.split(" ")
@@ -28,7 +37,7 @@ class Stage2():
     def loadTable(self):
         print("removing punctuations from reviews, sit back and relax")
         try:
-            DB = self.client[self.const.DB_YELP_MONGO];
+            DB = self.db
             srcCollection = DB.annotated_reviews_clean
             destCollection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
             reviews = []
@@ -42,6 +51,7 @@ class Stage2():
     def __init__(self):
         self.const = Constants()
         self.client = MongoClient(self.const.Mongo_Host);
+        self.db = self.client[self.const.DB_YELP_MONGO];
         #self.loadStopWords()
         
 

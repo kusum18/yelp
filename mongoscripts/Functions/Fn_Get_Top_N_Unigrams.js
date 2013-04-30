@@ -32,3 +32,11 @@ var removeUnFilledReviews = function(){
     print('non_annotated_reviews and annotated_reviews_clean created' );
 
 }
+
+var addRandom = function(){
+	print("adding random number to each record");
+	db.Review_no_punctuations.find().forEach(function(doc){
+		doc['random']=Math.random();
+		db.Review_no_punctuations_rand.insert()
+	});
+}
