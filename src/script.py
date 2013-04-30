@@ -13,6 +13,8 @@ if __name__ == '__main__':
     print "running the script. this will take time."
     startTime = time.time()
     xls2mg = Xls2mongo()
+    print "xls2mg created"
+    xls2mg.dropCollections()
     #load files to mongo
     t1 =time.time()
     xls2mg.load()
@@ -88,7 +90,5 @@ if __name__ == '__main__':
     stage3.genClassWiseTrigramsWithFreq()
     elapsed = (time.time() -t1)
     print "generating trigrams per class with freq took ",elapsed, "seconds"
-    
-    
     elapsed = (time.time() - startTime)/60
     print "Script completed. script took ", elapsed, " minutes"

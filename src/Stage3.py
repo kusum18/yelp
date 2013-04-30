@@ -144,7 +144,7 @@ class Stage3():
         self.db.Review_no_punctuations.map_reduce(map, 
                                                  reduce,
                                                  "Unigrams_with_freq")
-        
+        self.cleanUnigramsStopwords("Unigrams_with_freq", "Unigrams_with_freq_no_stopwords", "Unigrams_with_freq_withStopwords")
         print ("generating unigrams done")
     
     def generateClassWiseUnigrams(self):
@@ -172,6 +172,7 @@ class Stage3():
             self.db.Review_no_punctuations.map_reduce(mapFunction,
                                                      reduce,
                                                      "%s_Unigrams"%each_class)
+            self.cleanUnigramsStopwords("%s_Unigrams"%each_class, "%s_Unigrams_no_stopwords"%each_class, "%s_Unigrams_with_stopwords"%each_class)
             
         print("generating unigrams done")
     
@@ -264,6 +265,7 @@ class Stage3():
         
     
     def cleanUnigramsStopwords(self,srcCollection,destAcceptCollection,destRejectCollection):
+        print "removing stop words from ", srcCollection , "and creating ", destAcceptCollection, "and", destRejectCollection
         try:
             SWC = self.db[self.const.COLLECTION_STOP_WORDS]
             
@@ -287,7 +289,7 @@ class Stage3():
             
         except:
             print "Error: Cleaning Unigrams from Stopwords, \n Reason: ",sys.exc_info()
-
+        print "stop words removed check ",destAcceptCollection 
 
     def __init__(self):
         self.client = MongoClient(self.const.Mongo_Host)

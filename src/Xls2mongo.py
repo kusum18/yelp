@@ -4,7 +4,7 @@ Created on Apr 21, 2013
 @author: kusum
 '''
 import sys
-from MongoConfig import MongoConf;
+from MongoConfig import MongoConf
 from pymongo import MongoClient
 from xlrd import open_workbook,cellname,empty_cell
 from Review import Review,ReviewType
@@ -87,6 +87,16 @@ class Xls2mongo():
             return (review,True)
         else:
             return (review, False)
+
+    def dropCollections(self):
+        do_not_delete = ['review','system.indexes','user','checkin','business']
+        for name in self.db.collection_names():
+            
+            if name in do_not_delete:
+                pass
+            else:
+                print "droping collection ", name
+                self.db[name].drop()
 
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>
