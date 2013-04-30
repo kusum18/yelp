@@ -17,7 +17,7 @@ if __name__ == '__main__':
     xls2mg.dropCollections()
     #load files to mongo
     t1 =time.time()
-    #xls2mg.load()
+    xls2mg.load()
     elapsed = (time.time() -t1)
     print "load took",elapsed, "seconds" 
     # clean up. create non_annotated_reviews and create annotated_reviews_clean
