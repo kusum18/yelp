@@ -129,7 +129,7 @@ class Stage3():
         print ("generate unigrams from Review_no_punctuations collection...")
         map = Code("""
             function(){
-                review_text = this.review;
+                review_text = this.review.toLowerCase();
                 tokens = review_text.split(" ")
                 tokens.forEach(function(word){ 
                     emit(word,1)
