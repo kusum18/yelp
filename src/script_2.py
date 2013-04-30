@@ -14,12 +14,12 @@ class script_2():
         self.unigrams = []
         for unigram in unigramsCollection.find():
             try:
-                self.unigrams.append(unigram._id);
+                self.unigrams.append(unigram["_id"]);
             except:
                 print "Error: Fetching Unigrams from mongo. \n Reason: ",sys.exc_info()
     
     def isPresentInUnigram(self,bigram):
-        tokens = bigram._id.split(self.const.whitespace)
+        tokens = bigram["_id"].split(self.const.whitespace)
         for token in tokens:
             if token in self.unigrams:
                 return True
