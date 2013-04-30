@@ -18,7 +18,7 @@ class Constants():
     COLLECTION_TRIGRAMS_PRUNE_REJECT = "Trigrams_Prune_Reject"
     COLLECTION_STOP_WORDS = "Stopwords"
     DB_YELP_MONGO = "yelp"
-    FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
+    FILE_STOP_WORDS = "../Res/StopWords.txt"
     Mongo_Host = "localhost"
     EXT_EXCEL = ".xlsx" 
     
