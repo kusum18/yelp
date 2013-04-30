@@ -25,10 +25,10 @@ class script_2():
                 return True
         return False
          
-    def pruneBigrams(self):
-        bigramCollection = self.db[self.const.COLLECTION_BIGRAMS]
-        bigramAcceptCollection = self.db[self.const.COLLECTION_BIGRAMS_PRUNE_ACCEPT]
-        bigramRejectCollection = self.db[self.const.COLLECTION_BIGRAMS_PRUNE_REJECT]
+    def pruneBigrams(self,bigramCollectionName,bigramAcceptCollectionName,bigramRejectCollectionName):
+        bigramCollection = self.db[bigramCollectionName]
+        bigramAcceptCollection = self.db[bigramAcceptCollectionName]
+        bigramRejectCollection = self.db[bigramRejectCollectionName]
         try:
             for bigram in bigramCollection.find():
                 if self.isPresentInUnigram(bigram):
@@ -38,25 +38,23 @@ class script_2():
         except:
             print "Error: Pruning Bigrams",sys.exc_info()
     
-    def pruneTrigrams(self):
-        triCollection = self.db[self.const.COLLECTION_TRIGRAMS]
-        triAcceptCollection = self.db[self.const.COLLECTION_TRIGRAMS_PRUNE_ACCEPT]
-        triRejectCollection = self.db[self.const.COLLECTION_TRIGRAMS_PRUNE_REJECT]
+    def pruneTrigrams(self,trigramCollectionName,trigramAcceptCollectionName,trigramRejectCollectionName):
+        triCollection = self.db[trigramCollectionName]
+        triAcceptCollection = self.db[trigramAcceptCollectionName]
+        triRejectCollection = self.db[trigramRejectCollectionName]
         try:
-            for tri in triCollection.find():
-                if self.isPresentInUnigram(tri):
-                    triAcceptCollection.insert(tri)
+            for trigram in triCollection.find():
+                if self.isPresentInUnigram(trigram):
+                    triAcceptCollection.insert(trigram)
                 else:
-                    triRejectCollection.insert(tri)
+                    triRejectCollection.insert(trigram)
         except:
-            print "Error: Pruning Bigrams",sys.exc_info()
+            print "Error: Pruning Trigrams",sys.exc_info()
     
     def __init__(self):
         self.const = Constants()
         self.client = MongoClient(self.const.Mongo_Host);
         self.db = self.client[self.const.DB_YELP_MONGO];
         self.loadAllUnigrams()
-
-
 
 code = script_2();
