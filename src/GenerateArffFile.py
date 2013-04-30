@@ -51,12 +51,12 @@ class GenerateArff():
                     featureset[index+1]=-1
                 index+=2
             
-            rating = review["rating"]
+            rating = 6#review["rating"]
             if rating==1 or rating==2:
                 featureset[index]=1
             elif rating==3:
                 featureset[index+1]=1
-            else:
+            elif rating==4 or rating==5:
                 featureset[index+2]=1
         except:
             print "Error: Loading Additional Features. \n Reason: ",sys.exc_info()
@@ -75,7 +75,8 @@ class GenerateArff():
     
     def loadDataFeatures(self):
         try:
-            reviews = self.db[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS];
+            reviews = self.db["Review_no_punctuations"]#self.db[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS];
+
             lengthOfFeatures = len(self.features)+self.const.ADDITIONAL_FEATURES
             dataFeatures = []
             for review in reviews.find():
@@ -108,6 +109,7 @@ class GenerateArff():
         self.stage3 = Stage3()
         self.loadFeatures()
         datafeatures = self.loadDataFeatures()
+	print datafeatures
         self.generateArffFile(datafeatures)
         
 if __name__=="__main__":
