@@ -21,7 +21,7 @@ class Stage2():
         
     
     def processReview(self,review):
-        punctuation = re.compile(r'[-.?,\'"%:#&+/=;~`()|0-9]')  # [-.?!,":;()|0-9]'
+        punctuation = re.compile(r'[-.?,\'"%:#&$*!+/=;~`()|0-9]')  # [-.?!,":;()|0-9]'
         review_text = review["review"]
         review_text = punctuation.sub("",review_text)  # Removing punctuations
         tokens = review_text.split(" ") # nltk.word_tokenize(review_text)
