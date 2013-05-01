@@ -4,6 +4,7 @@ class Constants():
     COLLECTION_ANNOTATED_REVIEWS="annotated_reviews"
     COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS = "Review_no_stopwords"
     COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS = "Review_no_punctuations"
+    COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS_TEST = "rev_test"
     COLLECTION_REJECTED_REVIEWS = "Reject_reviews"
     COLLECTION_REVIEW = "review"
     COLLECTION_UNIGRAMS = "Unigrams"
@@ -19,7 +20,7 @@ class Constants():
     COLLECTION_STOP_WORDS = "Stopwords"
     COLLECTION_FEATURES = "features"
     ADDITIONAL_FEATURES = 13 # IsFoodGood....,IsPriceBad,IsRatingBad,IsRatingModerate,IsRatingGood,
-    DB_YELP_MONGO = "yelp"
+    DB_YELP_MONGO = "yelp_new"
     FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
     Mongo_Host = "localhost"
     EXT_EXCEL = ".xlsx" 

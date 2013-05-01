@@ -51,7 +51,7 @@ class GenerateArff():
                     featureset[index+1]=-1
                 index+=2
             
-            rating = review["rating"]
+            rating = review["stars"]
             if rating==1 or rating==2:
                 featureset[index]=1
             elif rating==3:
@@ -75,8 +75,9 @@ class GenerateArff():
     
     def loadDataFeatures(self):
         try:
-            reviews = self.db[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS];
+            reviews = self.db[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS_TEST];
             lengthOfFeatures = len(self.features)+self.const.ADDITIONAL_FEATURES
+            print "length of features ",lengthOfFeatures
             dataFeatures = []
             for review in reviews.find():
                 featureset = [0 for i in range(lengthOfFeatures)]
@@ -94,9 +95,11 @@ class GenerateArff():
             print "Error: Loading data. \n Reason: ",sys.exc_info()
     
     def generateArffFile(self,datafeatures):
+        print "data features length",len(datafeatures)
         try:
             self.features = self.features + ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
-            arff.dump('result.arff', datafeatures, relation="yelp", names=self.features)
+            
+            arff.dump('test.arff', datafeatures, relation="yelp", names=self.features)
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
     
