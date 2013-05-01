@@ -75,7 +75,7 @@ class GenerateArff():
     
     def loadDataFeatures(self):
         try:
-            reviews = self.db[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS_TEST];
+            reviews = self.db[self.const.COLLECTION_TRAINSET];
             lengthOfFeatures = len(self.features)+self.const.ADDITIONAL_FEATURES
             print "length of features ",lengthOfFeatures
             dataFeatures = []
@@ -99,7 +99,7 @@ class GenerateArff():
         try:
             self.features = self.features + ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
             
-            arff.dump('test.arff', datafeatures, relation="yelp", names=self.features)
+            arff.dump('result.arff', datafeatures, relation="yelp", names=self.features)
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
     
