@@ -61,7 +61,28 @@ var checkdups = function(){
 	});
 	print(db.duplicates.find().count() + " duplicate values removed");
 }
+
+var detectEmptyRows = function(){
+	print("deleting empty rows or useless rows");
+	db.useless_reviews.drop();
+	db.usefull_reviews.drop();
+	db.Review_no_punctuations.find().forEach(function(doc){
+		if ((doc['Food']==2 || doc['Food']==0) && 
+        	(doc['Ambiance']==2 || doc['Ambiance']==0)  &&
+        	(doc['Service']==2 || doc['Service']==0)  &&
+        	(doc['Deals']==2 || doc['Deals']==0)  &&
+        	(doc['Price']==2 || doc['Price']==0)){
+        	db.useless_reviews.insert(doc)
+        }
+        else{
+        	db.usefull_reviews.insert(doc)
+        }
+	});
+	print(db.useless_reviews.find().count() + " rows deleted ");
+}
+
 var makeSets = function(){
+	detectEmptyRows();
 	checkdups();
 	addRandom();
 	makeTestSet();
