@@ -5,10 +5,15 @@ var addRandom = function(){
 		doc['random']=Math.random();
 		db.Review_no_punctuations_rand.insert(doc)
 	});
+	print("add index on random attribute.");
+	db.Review_no_punctuations_rand.ensureIndex( { random :1 } );
+	print("index added");
 }
 
 var makeTestSet = function(){
+	print("delete existing testset");
 	db.testset.drop();
+	print(" creating testset");
 	count=0;
 	results = {};
 	while(count<1500){
@@ -19,11 +24,9 @@ var makeTestSet = function(){
 			result = db.Review_no_punctuations_rand.findOne( { random : { $lte : rand } } )
 		}
 		if(results[result["reviewId"]]){
-			print("ignore");
 			count = count -1;
 		}else{
 			results[result["reviewId"]]=result;
-			print("added");
 			db.testset.insert(result);
 		}
 	}
@@ -44,18 +47,19 @@ var makeTrainSet = function(){
 	print("trainset done")
 	print("size of train set"+ db.trainset.find().count());
 }
-var removeDups = function(){
+var checkdups = function(){
+	print("checking for duplicates ...");
 	db.duplicates.drop();
 	var prev = 0;
 	db.Review_no_punctuations.find({},{"reviewId":1}).sort({"reviewId":1}).forEach(function(doc){
 		if(doc['reviewId']==prev){
-			print("dup found.. damn");
 			db.duplicates.update( {"_id" : doc['reviewId']}, { "$inc" : {count:1} }, true);
 			db.Review_no_punctuations.remove({"_id":doc["_id"]});
 		}else{
 			prev = doc["reviewId"];
 		}
 	});
+	print(db.duplicates.find().count() + " duplicate values removed");
 }
 var makeSets = function(){
 	checkdups();
