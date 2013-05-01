@@ -19,7 +19,7 @@ class Constants():
     COLLECTION_TRIGRAMS_PRUNE_REJECT = "Trigrams_Prune_Reject"
     COLLECTION_STOP_WORDS = "Stopwords"
     COLLECTION_FEATURES = "features"
-    ADDITIONAL_FEATURES = 13 # IsFoodGood....,IsPriceBad,IsRatingBad,IsRatingModerate,IsRatingGood,
+    ADDITIONAL_FEATURES = 8  # IsFoodGood....,IsPriceBad,IsRatingBad,IsRatingModerate,IsRatingGood,
     DB_YELP_MONGO = "yelp"
     FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
     Mongo_Host = "localhost"
