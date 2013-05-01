@@ -78,11 +78,38 @@ var detectEmptyRows = function(){
         	db.usefull_reviews.insert(doc)
         }
 	});
+	db.useless_reviews.find().forEach(function(doc){
+		db.Review_no_punctuations.remove({"reviewId":doc["reviewId"]});
+	});
 	print(db.useless_reviews.find().count() + " rows deleted ");
 }
 
+var detectNegetiveRows = function(){
+	print("deleting empty rows or useless rows");
+	db.useless_neg_reviews.drop();
+	db.usefull_reviews.drop();
+	db.Review_no_punctuations.find().forEach(function(doc){
+		if ((doc['Food']==2 || doc['Food']==0 ||doc['Food']==-1) && 
+        	(doc['Ambiance']==2 || doc['Ambiance']==0  ||doc['Ambiance']==-1)  &&
+        	(doc['Service']==2 || doc['Service']==0 ||doc['Service']==-1)  &&
+        	(doc['Deals']==2 || doc['Deals']==0 ||doc['Deals']==-1)  &&
+        	(doc['Price']==2 || doc['Price']==0 ||doc['Price']==-1)){
+        	db.useless_neg_reviews.insert(doc)
+        }
+        else{
+        	db.usefull_reviews.insert(doc)
+        }
+	});
+	//db.useless_neg_reviews.find().forEach(function(doc){
+	//	db.Review_no_punctuations.remove({"reviewId":doc["reviewId"]});
+	//});
+	print(db.useless_reviews.find().count() + " rows deleted ");
+}
+//detectNegetiveRows();
+
 var makeSets = function(){
-	detectEmptyRows();
+	//detectEmptyRows();
+	//detectNegetiveRows();
 	checkdups();
 	addRandom();
 	makeTestSet();

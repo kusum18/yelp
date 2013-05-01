@@ -48,9 +48,9 @@ class GenerateArff():
                 value = review[category]
                 if value==1:
                     featureset[index]=1
-                elif value==-1:
+                """elif value==-1:
                     featureset[index+1]=1
-                index+=2
+                index+=2"""
             rating = review["stars"]
             if rating==1 or rating==2:
                 featureset[index]=1
@@ -97,8 +97,7 @@ class GenerateArff():
     def generateArffFile(self,datafeatures):
         print "data features length",len(datafeatures)
         try:
-            self.features = self.features + ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
-            
+            self.features = self.features + self.const.LABEL_FEATURES_GOOD
             arff.dump('result.arff', datafeatures, relation="yelp", names=self.features)
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
