@@ -4,6 +4,7 @@ from Constants import Constants
 import nltk
 from Stage2 import Stage2
 from Stage3 import Stage3
+import time
 
 class GenerateArff():
     
@@ -114,6 +115,8 @@ class GenerateArff():
         self.generateArffFile(datafeatures)
         
 if __name__=="__main__":
+    startTime = time.time()
     darff = GenerateArff();
-    
+    elapsed = (time.time() - startTime)/60
+    print "arff file generation took ", elapsed, " minutes";
 
