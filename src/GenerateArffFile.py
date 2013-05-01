@@ -49,8 +49,8 @@ class GenerateArff():
                 if value==1:
                     featureset[index]=1
                 """elif value==-1:
-                    featureset[index+1]=1
-                index+=2"""
+                    featureset[index+1]=1"""
+                index+=1
             rating = review["stars"]
             if rating==1 or rating==2:
                 featureset[index]=1
