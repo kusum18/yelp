@@ -50,13 +50,12 @@ class GenerateArff():
                 elif value==-1:
                     featureset[index+1]=-1
                 index+=2
-            
             rating = review["stars"]
             if rating==1 or rating==2:
                 featureset[index]=1
             elif rating==3:
                 featureset[index+1]=1
-            else:
+            elif rating==4 or rating==5:
                 featureset[index+2]=1
         except:
             print "Error: Loading Additional Features. \n Reason: ",sys.exc_info()
@@ -111,6 +110,7 @@ class GenerateArff():
         self.stage3 = Stage3()
         self.loadFeatures()
         datafeatures = self.loadDataFeatures()
+	print datafeatures
         self.generateArffFile(datafeatures)
         
 if __name__=="__main__":
