@@ -5,6 +5,7 @@ class Constants():
     COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS = "Review_no_stopwords"
     COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS = "Review_no_punctuations"
     COLLECTION_TRAINSET = "trainset"
+    COLLECTION_TESTSET = "testset"
     COLLECTION_REJECTED_REVIEWS = "Reject_reviews"
     COLLECTION_REVIEW = "review"
     COLLECTION_UNIGRAMS = "Unigrams"
@@ -26,6 +27,8 @@ class Constants():
     EXT_EXCEL = ".xlsx" 
     LABEL_FEATURES_ALL = ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
     LABEL_FEATURES_GOOD = ["IsFoodGood","IsServiceGood","IsAmbianceGood","IsDealsGood", "IsPriceGood","IsRatingBad","IsRatingModerate","IsRatingGood"]
+    OUTPUT_FILE_TRAIN = "result.arff"
+    OUTPUT_FILE_TEST = "test_result.arff"
     #Numbers
     FIRST_SHEET = 0
     UNIGRAM_THRESHOLD = 10
