@@ -67,7 +67,8 @@ class CleanFeatures:
             self.loadNewFeaturesInDB(features)
         except:
             print "Error: ",sys.exc_info()
-        
-        
+
+
+obj = CleanFeatures()   
 
 
