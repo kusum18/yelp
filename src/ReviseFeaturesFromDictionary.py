@@ -15,6 +15,7 @@ class CleanFeatures:
             for feature in featuresCollection.find():
                 features.append(feature["word"])
             print "Finished Loading Features"
+            return features
         except:
             print "Error: Loading Old features. \n Reason: ",sys.exc_info()
     

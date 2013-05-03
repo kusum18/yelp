@@ -1,3 +1,4 @@
+import os
 
 class Constants():
     #Strings
@@ -25,8 +26,8 @@ class Constants():
     DB_YELP_MONGO = "yelp"
     
     
-    FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
-    SYNONYMS = "..\\Res\\synonym.txt"
+    FILE_STOP_WORDS = "..%sRes%sStopWords.txt"%(os.sep,os.sep)
+    SYNONYMS = "..%sRes%ssynonym.txt"%(os.sep,os.sep)
     Mongo_Host = "localhost"
     EXT_EXCEL = ".xlsx" 
     LABEL_FEATURES_ALL = ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
