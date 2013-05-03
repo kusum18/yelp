@@ -47,7 +47,6 @@ class CleanFeatures:
     
     def loadNewFeaturesInDB(self,features):
         print "Loading New Features into DB"
-        features = []
         featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         featuresCollection.remove()
         try:
