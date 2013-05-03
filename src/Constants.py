@@ -20,9 +20,13 @@ class Constants():
     COLLECTION_TRIGRAMS_PRUNE_REJECT = "Trigrams_Prune_Reject"
     COLLECTION_STOP_WORDS = "Stopwords"
     COLLECTION_FEATURES = "features"
+    COLLECTION_FEATURES_CLEAN = "features_clean"
     ADDITIONAL_FEATURES = 8  # IsFoodGood....,IsPriceBad,IsRatingBad,IsRatingModerate,IsRatingGood,
     DB_YELP_MONGO = "yelp"
+    
+    
     FILE_STOP_WORDS = "..\\Res\\StopWords.txt"
+    SYNONYMS = "..\\Res\\synonym.txt"
     Mongo_Host = "localhost"
     EXT_EXCEL = ".xlsx" 
     LABEL_FEATURES_ALL = ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
@@ -36,4 +40,5 @@ class Constants():
     
     #delimiters
     whitespace = " "
+    DELIMITER_SYNONYMS = ":"
     

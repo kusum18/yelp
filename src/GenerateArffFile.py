@@ -1,13 +1,15 @@
-import sys,arff
-from pymongo import MongoClient
 from Constants import Constants
-import nltk
+from ReviseFeaturesFromDictionary import CleanFeatures
 from Stage2 import Stage2
 from Stage3 import Stage3
+from pymongo import MongoClient
+from sets import Set
+import nltk
+import sys
+import arff
 import time
 
 class GenerateArff():
-    
     def loadfeatureset(self,tokens,featureset):
         try:
             for token in tokens:
@@ -17,11 +19,24 @@ class GenerateArff():
                 else:
                     pass
         except:
-            pass
+            print "Error: Generating feature vector. \n Reason: ",sys.exc_info()
+    
+    def filterTokens(self,tokens):
+        try:
+            set = Set([])
+            for token in tokens:
+                if(token in self.dictionary):
+                    set.add(self.dictionary[token])
+                else:
+                    set.add(token)
+            return set
+        except:
+            print "Error filtering tokens.\n Reason: ",sys.exc_info()
     
     def checkUnigrams(self,review,featureset):
         try:
             tokens = review["review"].lower().split(self.const.whitespace)
+            tokens = self.filterTokens(tokens)
             self.loadfeatureset(tokens, featureset)
         except:
             print "Error: Loading Unigrams. \n Reason: ",sys.exc_info()
@@ -65,13 +80,17 @@ class GenerateArff():
     def loadFeatures(self):
         print "Loading Features"
         self.features = []
-        featuresCollection = self.db[self.const.COLLECTION_FEATURES]
+        featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         try:
             for feature in featuresCollection.find():
                 self.features.append(feature["word"])
             print "Finished Loading Features"
         except:
-            print "Error: Loading Unigrams. \n Reason: ",sys.exc_info()
+            print "Error: Loading features. \n Reason: ",sys.exc_info()
+            
+    def loadDictionary(self):
+        cfeatures = CleanFeatures()
+        self.dictionary = cfeatures.loadDictionary()
     
     def loadDataFeatures(self):
         try:
