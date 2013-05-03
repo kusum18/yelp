@@ -46,16 +46,17 @@ class CleanFeatures:
             print "Error Cleaning Features. Reason: ",sys.exc_info()
     
     def loadNewFeaturesInDB(self,features):
+        
         print "Loading New Features into DB"
         featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         featuresCollection.remove()
         try:
             for feature in features:
-                featuresCollection.insert(feature)
+                featuresCollection.insert({"word":feature})
             print "Finished Loading Features"
         except:
             print "Error: Loading Old features. \n Reason: ",sys.exc_info()
-    
+
     def __init__(self):
         try:
             self.const = Constants()
