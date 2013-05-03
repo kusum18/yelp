@@ -23,13 +23,13 @@ class GenerateArff():
     
     def filterTokens(self,tokens):
         try:
-            set = Set([])
+            fset = Set([])
             for token in tokens:
                 if(token in self.dictionary):
-                    set.add(self.dictionary[token])
+                    fset.add(self.dictionary[token])
                 else:
-                    set.add(token)
-            return set
+                    fset.add(token)
+            return fset
         except:
             print "Error filtering tokens.\n Reason: ",sys.exc_info()
     
@@ -84,7 +84,7 @@ class GenerateArff():
         try:
             for feature in featuresCollection.find():
                 self.features.append(feature["word"])
-            print "Finished Loading Features"
+            print "Finished Loading Features, number of features loaded", len(self.features)
         except:
             print "Error: Loading features. \n Reason: ",sys.exc_info()
             
@@ -112,7 +112,7 @@ class GenerateArff():
                 #step 4 - check additional features
                 self.checkAdditionalFeatures(review, featureset)
                 dataFeatures.append(featureset)
-            return set(dataFeatures)
+            return dataFeatures
         except:
             print "Error: Loading data. \n Reason: ",sys.exc_info()
     
@@ -124,7 +124,9 @@ class GenerateArff():
             output_file = self.const.OUTPUT_FILE_TRAIN
             if self.mode.lower() == 'test':
                 output_file=self.const.OUTPUT_FILE_TEST
+            print "generating arff file ", output_file ,"this will take time. please wait. "
             arff.dump(output_file, datafeatures, relation="yelp", names=self.features)
+            print "arff file generation done."
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
     

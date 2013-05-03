@@ -28,7 +28,6 @@ class CleanFeatures:
                 key = tokens[0]
                 value = tokens[1].strip()
                 dict[key]=value
-            
             return dict
         except:
             print "Error Opening Synonyms file. ", sys.exc_info()
