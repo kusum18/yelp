@@ -75,7 +75,10 @@ class GenerateArff():
     
     def loadDataFeatures(self):
         try:
-            reviews = self.db[self.const.COLLECTION_TRAINSET]; #COLLECTION_TRAINSET
+            collection=self.const.COLLECTION_TRAINSET
+            if self.mode.lower() == 'test':
+                collection=self.const.COLLECTION_TESTSET
+            reviews = self.db[collection];
             lengthOfFeatures = len(self.features)+self.const.ADDITIONAL_FEATURES
             print "length of features ",lengthOfFeatures
             dataFeatures = []
@@ -99,7 +102,10 @@ class GenerateArff():
         try:
             self.features = self.features + self.const.LABEL_FEATURES_GOOD
             # OUTPUT_FILE_TRAIN
-            arff.dump(self.const.OUTPUT_FILE_TRAIN, datafeatures, relation="yelp", names=self.features)
+            output_file = self.const.OUTPUT_FILE_TRAIN
+            if self.mode.lower() == 'test':
+                output_file=self.const.OUTPUT_FILE_TEST
+            arff.dump(self.const.output_file, datafeatures, relation="yelp", names=self.features)
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
     
@@ -110,11 +116,13 @@ class GenerateArff():
         self.stage2 = Stage2()
         self.stage3 = Stage3()
         self.loadFeatures()
+        self.mode = sys.argv[1]
         datafeatures = self.loadDataFeatures()
-	print datafeatures
         self.generateArffFile(datafeatures)
         
 if __name__=="__main__":
+    if len(sys.argv) < 2:
+        sys.exit('please specify the mode: test/train' )
     startTime = time.time()
     darff = GenerateArff();
     elapsed = (time.time() - startTime)/60
