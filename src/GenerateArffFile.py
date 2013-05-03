@@ -124,7 +124,7 @@ class GenerateArff():
             output_file = self.const.OUTPUT_FILE_TRAIN
             if self.mode.lower() == 'test':
                 output_file=self.const.OUTPUT_FILE_TEST
-            arff.dump(self.const.output_file, datafeatures, relation="yelp", names=self.features)
+            arff.dump(output_file, datafeatures, relation="yelp", names=self.features)
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
     
@@ -132,6 +132,7 @@ class GenerateArff():
         self.const = Constants()
         self.client = MongoClient(self.const.Mongo_Host);
         self.db = self.client[self.const.DB_YELP_MONGO];
+        self.loadDictionary()
         self.stage2 = Stage2()
         self.stage3 = Stage3()
         self.loadFeatures()
