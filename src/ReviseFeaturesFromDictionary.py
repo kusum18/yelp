@@ -52,7 +52,7 @@ class CleanFeatures:
         featuresCollection.remove()
         try:
             for feature in features:
-                featuresCollection.append(feature)
+                featuresCollection.insert(feature)
             print "Finished Loading Features"
         except:
             print "Error: Loading Old features. \n Reason: ",sys.exc_info()
