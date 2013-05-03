@@ -26,7 +26,7 @@ class CleanFeatures:
             for line in file_handle.readlines():
                 tokens = line.split(self.const.DELIMITER_SYNONYMS)
                 key = tokens[0]
-                value = tokens[1]
+                value = tokens[1].strip()
                 dict[key]=value
             
             return dict

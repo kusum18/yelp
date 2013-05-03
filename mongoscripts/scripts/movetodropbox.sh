@@ -2,7 +2,7 @@
 cp -r ../output ~/Dropbox/src
 
 # copy result.arff to dropbox
-# cp *.arff ~/Dropbox/src
+# cp *.arff ~/Dropbox/src/arff/may-2/
 
 
 #import features to mongo

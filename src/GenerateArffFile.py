@@ -106,13 +106,13 @@ class GenerateArff():
                 #step 1 - check unigrams
                 self.checkUnigrams(review, featureset)
                 #step 2 - check bigrams
-                self.checkBigrams(review, featureset)
+                #self.checkBigrams(review, featureset)
                 #step 3 - check trigrams
-                self.checkTrigrams(review, featureset)
+                #self.checkTrigrams(review, featureset)
                 #step 4 - check additional features
                 self.checkAdditionalFeatures(review, featureset)
                 dataFeatures.append(featureset)
-            return dataFeatures
+            return set(dataFeatures)
         except:
             print "Error: Loading data. \n Reason: ",sys.exc_info()
     
