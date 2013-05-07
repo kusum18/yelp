@@ -25,5 +25,5 @@ mongoexport --db $3 --collection Deals_Trigrams_with_freq --csv --fieldFile "$1/
 #-- combined--
 
 # sample command, run from the yelp folder
-# export.sh ./mongoscripts/scripts ./output yelp
+# ./mongoscripts/scripts/export.sh ./mongoscripts/scripts ./output yelp
 

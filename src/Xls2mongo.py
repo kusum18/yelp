@@ -108,6 +108,15 @@ class Xls2mongo():
         for name in delete:
             print "droping collection ", name
             self.db[name].drop()
+    
+    def dropTrigramCollections(self):
+        delete = ['TRIGRAMS_WO_COUNT','Trigrams_With_Freq','Food_Trigrams_with_freq',
+                         'Food_trigrams_temp','Service_Trigrams_with_freq','Service_trigrams_temp',
+                         'Ambiance_Trigrams_with_freq','Ambiance_trigrams_temp','Deals_Trigrams_with_freq',
+                         'Deals_trigrams_temp', 'Price_Trigrams_with_freq','Price_trigrams_temp',]
+        for name in delete:
+            print "droping collection ", name
+            self.db[name].drop()
 
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>

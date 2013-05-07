@@ -14,6 +14,7 @@ class Stage2():
             self.stop_words = re.split('\s+',file(self.const.FILE_STOP_WORDS).read().lower())
             DB = self.client[self.const.DB_YELP_MONGO]
             collection = DB[self.const.COLLECTION_STOP_WORDS];
+            collection.drop()
             for word in self.stop_words:
                 collection.insert({"word":word});
         except:
@@ -57,4 +58,4 @@ class Stage2():
 
 if __name__ == '__main__':
     obj = Stage2()
-    obj.loadTable()
+    obj.loadStopWords()

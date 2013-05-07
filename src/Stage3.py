@@ -29,14 +29,24 @@ class Stage3():
         return False
     
     def processReview_bigram(self,review):
-        review_text = review["review"].lower()
+        review_text = ""
+        if self.const.GENERATE_BIGRAMS_WITH_STOP_WORDS:
+            review_text = review["review"]
+        else:
+            review_text = self.removeStopWordsFromReview(review["review"])
+        review_text = review_text.lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
         lst = [{"word":bigram[0]+" "+bigram[1]} for bigram in bigram_list]# if self.string_found(bigram)]
         return lst
     
     def processReview_trigram(self,review):
-        review_text = review["review"].lower()
+        review_text = ""
+        if self.const.GENERATE_TRIGRAMS_WITH_STOP_WORDS:
+            review_text = review["review"]
+        else:
+            review_text = self.removeStopWordsFromReview(review["review"])
+        review_text = review_text.lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
         lst = [{"word":trigram[0]+" "+trigram[1]+" "+ trigram[2]} for trigram in trigram_list]# if self.string_found(bigram)]
@@ -292,12 +302,14 @@ class Stage3():
         SWC = self.db[self.const.COLLECTION_STOP_WORDS]
         swlist = [] # stop word list 
         for sw in SWC.find():
-            swlist.append(sw['word'])
+            swlist.append(sw['word'].lower())
         tokens = review_text.split(" ")
         review_tokens = []
         for token in tokens:
-            if token not in swlist:
+            if token.lower() not in swlist:
                 review_tokens.append(token)
+            else:
+                pass
         review_text = " ".join(review_tokens)
         return review_text
 
@@ -312,4 +324,4 @@ class Stage3():
 
 if __name__ == '__main__':
     obj = Stage3()
-    obj.generateUnigrams()
+    obj.generateBigrams()
