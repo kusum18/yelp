@@ -5,7 +5,7 @@ class Constants():
     COLLECTION_ANNOTATED_REVIEWS="annotated_reviews"
     COLLECTION_ANNOTATED_REVIEWS_WO_STOPWORDS = "Review_no_stopwords"
     COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS = "Review_no_punctuations"
-    COLLECTION_TRAINSET = "dummyset"
+    COLLECTION_TRAINSET = "trainset"
     COLLECTION_TESTSET = "testset"
     COLLECTION_REJECTED_REVIEWS = "Reject_reviews"
     COLLECTION_REVIEW = "review"
