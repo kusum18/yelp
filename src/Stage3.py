@@ -312,6 +312,7 @@ class Stage3():
         print "stop words removed check ",destAcceptCollection 
     
     def removeStopWordsFromReview(self,review_text):
+        print "BEFORE::::",review_text
         SWC = self.db[self.const.COLLECTION_STOP_WORDS]
         swlist = [] # stop word list 
         for sw in SWC.find():
@@ -324,6 +325,8 @@ class Stage3():
             else:
                 pass
         review_text = " ".join(review_tokens)
+        print "AFTER:::", review_text
+        sys.exit()
         return review_text
 
     def __init__(self):
