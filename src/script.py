@@ -19,6 +19,7 @@ if __name__ == '__main__':
     const = Constants()
     
     message = """
+    {6}
     please pay attention
     script will be run with following configuration. To stop enter 's'
     GENERATE_TRIGRAMS = {0}
@@ -27,15 +28,16 @@ if __name__ == '__main__':
     GENERATE_BIGRAMS_WITH_STOP_WORDS = {3}
     GENERATE_TRIGRAMS_WITH_STOP_WORDS = {4}
     LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO ={5}
+    {6}
     """.format(const.GENERATE_TRIGRAMS, const.GENERATE_BIGRAMS,
                const.GENERATE_UNIGRAMS,const.GENERATE_BIGRAMS_WITH_STOP_WORDS,
-               const.GENERATE_TRIGRAMS_WITH_STOP_WORDS,const.LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO)
+               const.GENERATE_TRIGRAMS_WITH_STOP_WORDS,const.LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO,
+               '*'*70)
     print message
     user_input = raw_input("To stop the script press 's', else press anything like 'c'")
     if user_input.lower() == 's':
         print("exiting..")
         sys.exit()
-        print ("exited safely")
 
     if const.GENERATE_UNIGRAMS:
         print "xls2mg created"
