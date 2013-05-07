@@ -23,12 +23,8 @@ class Constants():
     COLLECTION_FEATURES = "features"
     COLLECTION_FEATURES_CLEAN = "features_clean"
     ADDITIONAL_FEATURES = 8  # IsFoodGood....,IsPriceBad,IsRatingBad,IsRatingModerate,IsRatingGood,
-    DB_YELP_MONGO = "yelp"
-    
-    
     FILE_STOP_WORDS = "..%sRes%sStopWords.txt"%(os.sep,os.sep)
     SYNONYMS = "..%sRes%ssynonym.txt"%(os.sep,os.sep)
-    Mongo_Host = "localhost"
     EXT_EXCEL = ".xlsx" 
     LABEL_FEATURES_ALL = ["IsFoodGood","IsFoodBad","IsServiceGood","IsServiceBad","IsAmbianceGood","IsAmbianceBad","IsDealsGood","IsDealsBad","IsPriceGood","IsPriceBad","IsRatingBad","IsRatingModerate","IsRatingGood"]
     LABEL_FEATURES_GOOD = ["IsFoodGood","IsServiceGood","IsAmbianceGood","IsDealsGood", "IsPriceGood","IsRatingBad","IsRatingModerate","IsRatingGood"]
@@ -38,7 +34,6 @@ class Constants():
     FIRST_SHEET = 0
     UNIGRAM_THRESHOLD = 10
     #END
-    
     #delimiters
     whitespace = " "
     DELIMITER_SYNONYMS = ":"
@@ -50,4 +45,6 @@ class Constants():
     GENERATE_BIGRAMS_WITH_STOP_WORDS = False
     GENERATE_TRIGRAMS_WITH_STOP_WORDS = True
     LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO =False
+    Mongo_Host = "localhost"
+    DB_YELP_MONGO = "yelp"
     

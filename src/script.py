@@ -28,13 +28,15 @@ if __name__ == '__main__':
     GENERATE_BIGRAMS_WITH_STOP_WORDS = {3}
     GENERATE_TRIGRAMS_WITH_STOP_WORDS = {4}
     LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO ={5}
+    DB_YELP_MONGO = {7}
+    Mongo_Host = {8}
     {6}
     """.format(const.GENERATE_TRIGRAMS, const.GENERATE_BIGRAMS,
                const.GENERATE_UNIGRAMS,const.GENERATE_BIGRAMS_WITH_STOP_WORDS,
                const.GENERATE_TRIGRAMS_WITH_STOP_WORDS,const.LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO,
-               '*'*70)
+               '*'*70,const.DB_YELP_MONGO,const.Mongo_Host)
     print message
-    user_input = raw_input("To stop the script press 's', else press anything like 'c'")
+    user_input = raw_input("To stop the script press 's', else press anything like 'c'  ")
     if user_input.lower() == 's':
         print("exiting..")
         sys.exit()
