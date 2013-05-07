@@ -14,15 +14,9 @@ class GenerateArff():
     def loadfeatureset(self,tokens,featureset):
         try:
             for token in tokens:
-                if " " in token:
-                    print "check token",token
-                #print "testing *****",("good food" in self.features)
-                #print "index **** ", self.features.index("good food")
                 if token in self.features:
-                    
                     index = self.features.index(token)
                     featureset[index] +=1  # gives us the frequency of each feature in the featureset.
-                    #print "token",token,"featureset[index]", featureset[index]
                 else:
                     pass
         except:
@@ -96,7 +90,7 @@ class GenerateArff():
         featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         try:
             for feature in featuresCollection.find():
-                self.features.append(str(feature["word"]))
+                self.features.append(feature["word"])
             print "Finished Loading Features, number of features loaded", len(self.features)
         except:
             print "Error: Loading features. \n Reason: ",sys.exc_info()
@@ -153,6 +147,7 @@ class GenerateArff():
         grams = bigram.split(" ")
         indexFg = self.features.index(grams[0])
         indexSg = self.features.index(grams[1])
+        
         fg_freq = 0
         sg_freq = 0
         if indexFg !=-1:
@@ -161,12 +156,14 @@ class GenerateArff():
             sg_freq =  featureset[indexSg]
         # check of 1st gram
         if bigram_freq>=fg_freq:
+            print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
             featureset[indexBg]=1
             featureset[indexFg]=0
         if bigram_freq<fg_freq:
             featureset[indexBg]=1
             featureset[indexFg]=1
         if bigram_freq>=sg_freq:
+            print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
             featureset[indexBg]=1
             featureset[indexSg]=0
         if bigram_freq<sg_freq:

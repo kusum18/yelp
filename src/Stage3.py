@@ -32,14 +32,14 @@ class Stage3():
         review_text = review["review"].lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
-        lst = [{"word":str(bigram[0])+" "+str(bigram[1])} for bigram in bigram_list]# if self.string_found(bigram)]
+        lst = [{"word":bigram[0]+" "+bigram[1]} for bigram in bigram_list]# if self.string_found(bigram)]
         return lst
     
     def processReview_trigram(self,review):
         review_text = review["review"].lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
-        lst = [{"word":str(trigram[0])+" "+str(trigram[1])+" "+ str(trigram[2])} for trigram in trigram_list]# if self.string_found(bigram)]
+        lst = [{"word":trigram[0]+" "+trigram[1]+" "+ trigram[2]} for trigram in trigram_list]# if self.string_found(bigram)]
         return lst
         
     def generateBigrams(self):
