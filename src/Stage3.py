@@ -37,7 +37,15 @@ class Stage3():
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
-        lst = [{"word":bigram[0]+" "+bigram[1]} for bigram in bigram_list]# if self.string_found(bigram)]
+        
+        lst =[]
+        for bigram in bigram_list:# if self.string_found(bigram)]
+            first_word = bigram[0].strip()
+            second_word = bigram[1].strip()
+            if ""==first_word or ""==second_word:
+                pass
+            else:
+                lst.append({"word":bigram[0]+" "+bigram[1]})
         return lst
     
     def processReview_trigram(self,review):
