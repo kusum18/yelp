@@ -100,6 +100,15 @@ class Xls2mongo():
                 print "droping collection ", name
                 self.db[name].drop()
 
+    def dropBigramCollections(self):
+        delete = ['BIGRAMS_WO_COUNT','Bigrams_With_Freq','Food_Bigrams_with_freq',
+                         'Food_bigrams_temp','Service_Bigrams_with_freq','Service_bigrams_temp',
+                         'Ambiance_Bigrams_with_freq','Ambiance_bigrams_temp','Deals_Bigrams_with_freq',
+                         'Deals_bigrams_temp', 'Price_Bigrams_with_freq','Price_bigrams_temp',]
+        for name in delete:
+            print "droping collection ", name
+            self.db[name].drop()
+
     def __init__(self):
         #usage python Xls2mongo.py <file1> <file2>
         self.config = MongoConf();
@@ -138,5 +147,5 @@ class Xls2mongo():
 
 if __name__ == '__main__':
     obj = Xls2mongo()
-    obj.load()
+    obj.dropBigramCollections()
 

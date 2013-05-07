@@ -10,45 +10,49 @@ from Constants import Constants
 import time
 
 if __name__ == '__main__':
+    runStep2Only=True
     print "running the script. this will take time."
     startTime = time.time()
     xls2mg = Xls2mongo()
-    print "xls2mg created"
-    xls2mg.dropCollections()
-    #load files to mongo
-    t1 =time.time()
-    #xls2mg.load()
-    elapsed = (time.time() -t1)
-    print "load took",elapsed, "seconds" 
-    # clean up. create non_annotated_reviews and create annotated_reviews_clean
-    t1 =time.time()
-    xls2mg.removeUnFilledReviews()
-    elapsed = (time.time() -t1)
-    print "removing unfilled reviews took ",elapsed, "seconds" 
-    #remove punctuations
     stage2 = Stage2()
-    t1 =time.time()
-    const = Constants()
-    stage2.loadTable()
-    elapsed = (time.time() -t1)
-    print "removing punctuations took ",elapsed, "seconds"
-    print "Loading Stopwords"
-    stage2.loadStopWords()
-    print "Done loading Stopwords" 
-    # map reduce to create unigrams mongo 
     stage3 = Stage3()
-    # *******Unigrams ************
-    # generage unigrams with freq - combined
-    t1 =time.time()
-    stage3.generateUnigrams()
-    elapsed = (time.time() -t1)
-    print "generating unigrams took ",elapsed, "seconds" 
-    # generate class wise unigrams with freq
-    t1 =time.time()
-    stage3.generateClassWiseUnigrams()
-    elapsed = (time.time() -t1)
-    print "generating classwise unigrams took ",elapsed, "seconds" 
-    # ********** Bigrams ***********
+    if not runStep2Only:
+        print "xls2mg created"
+        xls2mg.dropCollections()
+        #load files to mongo
+        t1 =time.time()
+        xls2mg.load()
+        elapsed = (time.time() -t1)
+        print "load took",elapsed, "seconds" 
+        # clean up. create non_annotated_reviews and create annotated_reviews_clean
+        t1 =time.time()
+        xls2mg.removeUnFilledReviews()
+        elapsed = (time.time() -t1)
+        print "removing unfilled reviews took ",elapsed, "seconds" 
+        #remove punctuations
+        
+        t1 =time.time()
+        const = Constants()
+        stage2.loadTable()
+        elapsed = (time.time() -t1)
+        print "removing punctuations took ",elapsed, "seconds"
+        print "Loading Stopwords"
+        stage2.loadStopWords()
+        print "Done loading Stopwords" 
+        # map reduce to create unigrams mongo 
+        
+        # *******Unigrams ************
+        # generage unigrams with freq - combined
+        t1 =time.time()
+        stage3.generateUnigrams()
+        elapsed = (time.time() -t1)
+        print "generating unigrams took ",elapsed, "seconds" 
+        # generate class wise unigrams with freq
+        t1 =time.time()
+        stage3.generateClassWiseUnigrams()
+        elapsed = (time.time() -t1)
+        print "generating classwise unigrams took ",elapsed, "seconds" 
+        # ********** Bigrams ***********
     # generate bigrams with out freq
     t1 =time.time()
     stage3.generateBigrams()

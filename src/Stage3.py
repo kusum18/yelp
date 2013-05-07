@@ -29,23 +29,23 @@ class Stage3():
         return False
     
     def processReview_bigram(self,review):
-        review_text = review["review"]
+        review_text = review["review"].lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
-        lst = [{"word":bigram[0]+" "+bigram[1]} for bigram in bigram_list]# if self.string_found(bigram)]
+        lst = [{"word":str(bigram[0])+" "+str(bigram[1])} for bigram in bigram_list]# if self.string_found(bigram)]
         return lst
     
     def processReview_trigram(self,review):
-        review_text = review["review"]
+        review_text = review["review"].lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
-        lst = [{"word":trigram[0]+" "+trigram[1]+" "+ trigram[2]} for trigram in trigram_list]# if self.string_found(bigram)]
+        lst = [{"word":str(trigram[0])+" "+str(trigram[1])+" "+ str(trigram[2])} for trigram in trigram_list]# if self.string_found(bigram)]
         return lst
         
     def generateBigrams(self):
-        print("generating bigrams from Review_no_punctuations ")
+        print("generating bigrams from trainset ")
         DB = self.db
-        Collection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
+        Collection = DB[self.const.COLLECTION_TRAINSET]
         DestCollection = DB[self.const.COLLECTION_TEMP_BIGRAMS]
         try:
             for review in Collection.find():
@@ -61,7 +61,7 @@ class Stage3():
     def generateTrigrams(self):
         print("generating trigrams combined. sit back this will take time")
         DB = self.db
-        Collection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
+        Collection = DB[self.const.COLLECTION_TRAINSET]
         #DestCollection = DB[self.const.COLLECTION_TEMP_BIGRAMS]
         print "processing.."
         try:
@@ -78,7 +78,7 @@ class Stage3():
     def generateTrigramsPerClass(self):
         print "generating trigrams per class. Note. no freq as of now"
         DB = self.db
-        Collection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
+        Collection = DB[self.const.COLLECTION_TRAINSET]
         #DestCollection = DB[self.const.COLLECTION_TEMP_BIGRAMS]
         try:
             for review in Collection.find():
@@ -103,7 +103,7 @@ class Stage3():
     def generateBigramsPerClass(self):
         print("generating bigrams per class")
         DB = self.db
-        Collection = DB[self.const.COLLECTION_ANNOTATED_REVIEWS_WO_PUNCTUATIONS]
+        Collection = DB[self.const.COLLECTION_TRAINSET]
         #DestCollection = DB[self.const.COLLECTION_TEMP_BIGRAMS]
         try:
             for review in Collection.find():
@@ -259,7 +259,7 @@ class Stage3():
                 """)
     
             print("generating %s trigrams"%each_class)
-            self.db.Food_trigrams_temp.map_reduce(map,
+            self.db["%s_trigrams_temp"%each_class].map_reduce(map,
                                                 reduce,
                                                 "%s_Trigrams_with_freq"%each_class)
         print ("generating trigrams per class with freq done")
@@ -287,6 +287,19 @@ class Stage3():
         except:
             print "Error: Cleaning Unigrams from Stopwords, \n Reason: ",sys.exc_info()
         print "stop words removed check ",destAcceptCollection 
+    
+    def removeStopWordsFromReview(self,review_text):
+        SWC = self.db[self.const.COLLECTION_STOP_WORDS]
+        swlist = [] # stop word list 
+        for sw in SWC.find():
+            swlist.append(sw['word'])
+        tokens = review_text.split(" ")
+        review_tokens = []
+        for token in tokens:
+            if token not in swlist:
+                review_tokens.append(token)
+        review_text = " ".join(review_tokens)
+        return review_text
 
     def __init__(self):
         self.client = MongoClient(self.const.Mongo_Host)

@@ -8,14 +8,21 @@ import nltk
 import sys
 import arff
 import time
+from nltk.tag.api import FeaturesetTaggerI
 
 class GenerateArff():
     def loadfeatureset(self,tokens,featureset):
         try:
             for token in tokens:
+                if " " in token:
+                    print "check token",token
+                #print "testing *****",("good food" in self.features)
+                #print "index **** ", self.features.index("good food")
                 if token in self.features:
+                    
                     index = self.features.index(token)
-                    featureset[index]=1
+                    featureset[index] +=1  # gives us the frequency of each feature in the featureset.
+                    #print "token",token,"featureset[index]", featureset[index]
                 else:
                     pass
         except:
@@ -23,12 +30,12 @@ class GenerateArff():
     
     def filterTokens(self,tokens):
         try:
-            fset = Set([])
+            fset = []
             for token in tokens:
                 if(token in self.dictionary):
-                    fset.add(self.dictionary[token])
+                    fset.append(self.dictionary[token])
                 else:
-                    fset.add(token)
+                    fset.append(token)
             return fset
         except:
             print "Error filtering tokens.\n Reason: ",sys.exc_info()
@@ -44,14 +51,20 @@ class GenerateArff():
     def checkBigrams(self,review,featureset):
         try:
             tokens = self.stage3.processReview_bigram(review)
-            self.loadfeatureset(tokens, featureset)
+            bigrams = []
+            for token in tokens:
+                bigrams.append(token['word'])
+            self.loadfeatureset(bigrams, featureset)
         except:
             print "Error: Loading Bigrams. \n Reason: ",sys.exc_info()
     
     def checkTrigrams(self,review,featureset):
         try:
             tokens = self.stage3.processReview_trigram(review)
-            self.loadfeatureset(tokens, featureset)
+            trigrams = []
+            for token in tokens:
+                trigrams.append(token['word'])
+            self.loadfeatureset(trigrams, featureset)
         except:
             print "Error: Loading Trigrams. \n Reason: ",sys.exc_info()
     
@@ -83,7 +96,7 @@ class GenerateArff():
         featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         try:
             for feature in featuresCollection.find():
-                self.features.append(feature["word"])
+                self.features.append(str(feature["word"]))
             print "Finished Loading Features, number of features loaded", len(self.features)
         except:
             print "Error: Loading features. \n Reason: ",sys.exc_info()
@@ -106,16 +119,60 @@ class GenerateArff():
                 #step 1 - check unigrams
                 self.checkUnigrams(review, featureset)
                 #step 2 - check bigrams
-                #self.checkBigrams(review, featureset)
+                self.checkBigrams(review, featureset)
                 #step 3 - check trigrams
                 #self.checkTrigrams(review, featureset)
                 #step 4 - check additional features
                 self.checkAdditionalFeatures(review, featureset)
+                #step 5 -- apply business Logic
+                self.applyBusinessLogicOnFeatureset(featureset)
+                #step 6 -- set everything with freq>0 to 1
+                self.makeMeOne(featureset)
                 dataFeatures.append(featureset)
             return dataFeatures
         except:
             print "Error: Loading data. \n Reason: ",sys.exc_info()
     
+    def applyBusinessLogicOnFeatureset(self,featureset):
+        for feature in self.features:
+            grams = feature.split(" ")
+            if len(grams)==2:
+                #its a bigram, get applylogic
+                self.checkAndSetFeatureSet(feature, featureset)
+
+    def makeMeOne(self,featureset):
+        index = 0
+        for featureValue in featureset:
+            if featureValue >0:
+                featureset[index]=1
+            index +=1
+
+    def checkAndSetFeatureSet(self,bigram,featureset):
+        indexBg = self.features.index(bigram)
+        bigram_freq = featureset[indexBg]
+        grams = bigram.split(" ")
+        indexFg = self.features.index(grams[0])
+        indexSg = self.features.index(grams[1])
+        fg_freq = 0
+        sg_freq = 0
+        if indexFg !=-1:
+            fg_freq = featureset[indexFg]
+        if indexSg !=-1:
+            sg_freq =  featureset[indexSg]
+        # check of 1st gram
+        if bigram_freq>=fg_freq:
+            featureset[indexBg]=1
+            featureset[indexFg]=0
+        if bigram_freq<fg_freq:
+            featureset[indexBg]=1
+            featureset[indexFg]=1
+        if bigram_freq>=sg_freq:
+            featureset[indexBg]=1
+            featureset[indexSg]=0
+        if bigram_freq<sg_freq:
+            featureset[indexBg]=1
+            featureset[indexSg]=1
+        
     def generateArffFile(self,datafeatures):
         print "data features length",len(datafeatures)
         try:
