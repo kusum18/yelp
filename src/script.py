@@ -79,6 +79,7 @@ if __name__ == '__main__':
     if const.GENERATE_BIGRAMS:
         # generate bigrams with out freq
         t1 =time.time()
+        stage2.loadStopWords()
         xls2mg.dropBigramCollections()
         stage3.generateBigrams()
         elapsed = (time.time() -t1)
@@ -101,6 +102,7 @@ if __name__ == '__main__':
     #************* Trigrams*****************
     # generate trigrams without freq
     if const.GENERATE_TRIGRAMS:
+        stage2.loadStopWords()
         t1 =time.time()
         xls2mg.dropTrigramCollections()
         stage3.generateTrigrams()
