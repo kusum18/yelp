@@ -1,9 +1,13 @@
-import sys,nltk,pymongo,re
-from pymongo import MongoClient
 from Constants import Constants
+from bson import Code
 from nltk import bigrams
 from nltk.util import trigrams
-from bson import Code
+from pymongo import MongoClient
+import sys
+import nltk
+import pymongo
+import re
+from Stage2 import Stage2
 class TopNUnigrams():
     const = Constants
     
@@ -34,10 +38,10 @@ class Stage3():
             review_text = review["review"]
         else:
             review_text = self.removeStopWordsFromReview(review["review"])
+        review_text = self.stage2.removePunctuations(review_text)
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
-        
         lst =[]
         for bigram in bigram_list:# if self.string_found(bigram)]
             first_word = bigram[0].strip()
@@ -45,7 +49,7 @@ class Stage3():
             if ""==first_word or ""==second_word:
                 pass
             else:
-                lst.append({"word":bigram[0]+" "+bigram[1]})
+                lst.append({"word":first_word+" "+second_word})
         return lst
     
     def processReview_trigram(self,review):
@@ -54,6 +58,7 @@ class Stage3():
             review_text = review["review"]
         else:
             review_text = self.removeStopWordsFromReview(review["review"])
+        review_text = self.stage2.removePunctuations(review_text)
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
@@ -324,6 +329,7 @@ class Stage3():
     def __init__(self):
         self.client = MongoClient(self.const.Mongo_Host)
         self.db = self.client[self.const.DB_YELP_MONGO]
+        self.stage2 = Stage2()
         #self.topUnigrams =TopNUnigrams().getListWithThreshold(self.const.UNIGRAM_THRESHOLD)
         #self.generateTrigramsPerClass();
 
