@@ -33,12 +33,11 @@ class Stage3():
         return False
     
     def processReview_bigram(self,review):
-        review_text = ""
+        review_text = self.stage2.removePunctuations(review["review"])
         if self.const.GENERATE_BIGRAMS_WITH_STOP_WORDS:
-            review_text = review["review"]
+            pass
         else:
-            review_text = self.removeStopWordsFromReview(review["review"])
-        review_text = self.stage2.removePunctuations(review_text)
+            review_text = self.removeStopWordsFromReview(review_text)
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         bigram_list = bigrams(tokens)
@@ -53,12 +52,11 @@ class Stage3():
         return lst
     
     def processReview_trigram(self,review):
-        review_text = ""
+        review_text = self.stage2.removePunctuations(review["review"])
         if self.const.GENERATE_TRIGRAMS_WITH_STOP_WORDS:
-            review_text = review["review"]
+            pass
         else:
-            review_text = self.removeStopWordsFromReview(review["review"])
-        review_text = self.stage2.removePunctuations(review_text)
+            review_text = self.removeStopWordsFromReview(review_text)
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
@@ -326,7 +324,6 @@ class Stage3():
                 pass
         review_text = " ".join(review_tokens)
         print "AFTER:::", review_text
-        sys.exit()
         return review_text
 
     def __init__(self):
