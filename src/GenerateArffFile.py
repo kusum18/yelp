@@ -109,6 +109,7 @@ class GenerateArff():
             print "length of features ",lengthOfFeatures
             dataFeatures = []
             for review in reviews.find():
+                print ("hello")
                 featureset = [0 for i in range(lengthOfFeatures)]
                 #step 1 - check unigrams
                 self.checkUnigrams(review, featureset)
@@ -128,47 +129,56 @@ class GenerateArff():
             print "Error: Loading data. \n Reason: ",sys.exc_info()
     
     def applyBusinessLogicOnFeatureset(self,featureset):
-        for feature in self.features:
-            grams = feature.split(" ")
-            if len(grams)==2:
-                #its a bigram, get applylogic
-                self.checkAndSetFeatureSet(feature, featureset)
+        try:
+            for feature in self.features:
+                grams = feature.split(" ")
+                if len(grams)==2:
+                    #its a bigram, get applylogic
+                    self.checkAndSetFeatureSet(feature, featureset)
+        except:
+            print "Error: applyBusinessLogicOnFeatureset. \n Reason: ",sys.exc_info()
 
     def makeMeOne(self,featureset):
-        index = 0
-        for featureValue in featureset:
-            if featureValue >0:
-                featureset[index]=1
-            index +=1
+        try:
+            index = 0
+            for featureValue in featureset:
+                if featureValue >0:
+                    featureset[index]=1
+                index +=1
+        except:
+            print "Error: makeMeOne. \n Reason: ",sys.exc_info()
 
     def checkAndSetFeatureSet(self,bigram,featureset):
-        indexBg = self.features.index(bigram)
-        bigram_freq = featureset[indexBg]
-        grams = bigram.split(" ")
-        indexFg = self.features.index(grams[0])
-        indexSg = self.features.index(grams[1])
-        
-        fg_freq = 0
-        sg_freq = 0
-        if indexFg !=-1:
-            fg_freq = featureset[indexFg]
-        if indexSg !=-1:
-            sg_freq =  featureset[indexSg]
-        # check of 1st gram
-        if bigram_freq>=fg_freq:
-            print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
-            featureset[indexBg]=1
-            featureset[indexFg]=0
-        if bigram_freq<fg_freq:
-            featureset[indexBg]=1
-            featureset[indexFg]=1
-        if bigram_freq>=sg_freq:
-            print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
-            featureset[indexBg]=1
-            featureset[indexSg]=0
-        if bigram_freq<sg_freq:
-            featureset[indexBg]=1
-            featureset[indexSg]=1
+        try:
+            indexBg = self.features.index(bigram)
+            bigram_freq = featureset[indexBg]
+            grams = bigram.split(" ")
+            indexFg = self.features.index(grams[0])
+            indexSg = self.features.index(grams[1])
+            
+            fg_freq = 0
+            sg_freq = 0
+            if indexFg !=-1:
+                fg_freq = featureset[indexFg]
+            if indexSg !=-1:
+                sg_freq =  featureset[indexSg]
+            # check of 1st gram
+            if bigram_freq>=fg_freq:
+                print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
+                featureset[indexBg]=1
+                featureset[indexFg]=0
+            if bigram_freq<fg_freq:
+                featureset[indexBg]=1
+                featureset[indexFg]=1
+            if bigram_freq>=sg_freq:
+                print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
+                featureset[indexBg]=1
+                featureset[indexSg]=0
+            if bigram_freq<sg_freq:
+                featureset[indexBg]=1
+                featureset[indexSg]=1
+        except:
+            print "Error: checkAndSetFeatureSet. \n Reason: ",sys.exc_info()
         
     def generateArffFile(self,datafeatures):
         print "data features length",len(datafeatures)

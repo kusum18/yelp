@@ -1,4 +1,4 @@
-#bibash
+#!/bin/bash
 # file_fields_path UservaibhavsainDocumentworkspacyelmongoscriptscripts
 # output/t_path =UservaibhavsainDocumentworkspacyelp
 #-- Unigrams---
