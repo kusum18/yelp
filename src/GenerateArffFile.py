@@ -194,7 +194,10 @@ class GenerateArff():
             if self.mode.lower() == 'test':
                 output_file=self.const.OUTPUT_FILE_TEST
             print "generating arff file ", output_file ,"this will take time. please wait. "
-            arff.dump(output_file, datafeatures, relation="yelp", names=self.features)
+            features_underscore = []
+            for gram in self.features:
+                features_underscore.append(gram.replace(" ","_"))
+            arff.dump(output_file, datafeatures, relation="yelp", names=features_underscore)
             print "arff file generation done."
         except:
             print "Error: Generating Arff file. \n Reason: ",sys.exc_info()
