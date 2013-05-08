@@ -60,7 +60,15 @@ class Stage3():
         review_text = review_text.lower()
         tokens = review_text.split(" ")
         trigram_list = trigrams(tokens)
-        lst = [{"word":trigram[0]+" "+trigram[1]+" "+ trigram[2]} for trigram in trigram_list]# if self.string_found(bigram)]
+        lst =[]
+        for trigram in trigram_list:# if self.string_found(bigram)]
+            first_word = trigram[0].strip()
+            second_word = trigram[1].strip()
+            third_word = trigram[1].strip()
+            if ""==first_word or ""==second_word or ""==third_word:
+                pass
+            else:
+                lst.append({"word":first_word+" "+second_word+" "+third_word})
         return lst
         
     def generateBigrams(self):
@@ -310,7 +318,6 @@ class Stage3():
         print "stop words removed check ",destAcceptCollection 
     
     def removeStopWordsFromReview(self,review_text):
-        print "BEFORE::::",review_text
         SWC = self.db[self.const.COLLECTION_STOP_WORDS]
         swlist = [] # stop word list 
         for sw in SWC.find():
@@ -323,7 +330,6 @@ class Stage3():
             else:
                 pass
         review_text = " ".join(review_tokens)
-        print "AFTER:::", review_text
         return review_text
 
     def __init__(self):
