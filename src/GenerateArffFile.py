@@ -109,7 +109,6 @@ class GenerateArff():
             print "length of features ",lengthOfFeatures
             dataFeatures = []
             for review in reviews.find():
-                print ("hello")
                 featureset = [0 for i in range(lengthOfFeatures)]
                 #step 1 - check unigrams
                 self.checkUnigrams(review, featureset)
@@ -152,31 +151,37 @@ class GenerateArff():
         try:
             indexBg = self.features.index(bigram)
             bigram_freq = featureset[indexBg]
-            grams = bigram.split(" ")
-            indexFg = self.features.index(grams[0])
-            indexSg = self.features.index(grams[1])
-            
-            fg_freq = 0
-            sg_freq = 0
-            if indexFg !=-1:
-                fg_freq = featureset[indexFg]
-            if indexSg !=-1:
-                sg_freq =  featureset[indexSg]
-            # check of 1st gram
-            if bigram_freq>=fg_freq:
-                print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
-                featureset[indexBg]=1
-                featureset[indexFg]=0
-            if bigram_freq<fg_freq:
-                featureset[indexBg]=1
-                featureset[indexFg]=1
-            if bigram_freq>=sg_freq:
-                print "bigram:", bigram, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
-                featureset[indexBg]=1
-                featureset[indexSg]=0
-            if bigram_freq<sg_freq:
-                featureset[indexBg]=1
-                featureset[indexSg]=1
+            if bigram_freq>0:
+                grams = bigram.split(" ")
+                if grams[0] in self.features:
+                    indexFg = self.features.index(grams[0])
+                else:
+                    indexFg=-1
+                if grams[1] in self.features:
+                    indexSg = self.features.index(grams[1])
+                else:
+                    indexSg=-1
+                fg_freq = 0
+                sg_freq = 0
+                if indexFg !=-1:
+                    fg_freq = featureset[indexFg]
+                if indexSg !=-1:
+                    sg_freq =  featureset[indexSg]
+                # check of 1st gram
+                if bigram_freq>=fg_freq:
+                    print "bigram:", bigram, "indexBg",indexBg," bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
+                    featureset[indexBg]=1
+                    featureset[indexFg]=0
+                if bigram_freq<fg_freq:
+                    featureset[indexBg]=1
+                    featureset[indexFg]=1
+                if bigram_freq>=sg_freq:
+                    print "bigram:", bigram, "indexBg",indexBg, " bg_freq", bigram_freq, "fg", grams[0], "\n fg_freq", fg_freq,"sg", grams[1],"sg_freq", sg_freq
+                    featureset[indexBg]=1
+                    featureset[indexSg]=0
+                if bigram_freq<sg_freq:
+                    featureset[indexBg]=1
+                    featureset[indexSg]=1
         except:
             print "Error: checkAndSetFeatureSet. \n Reason: ",sys.exc_info()
         
