@@ -64,7 +64,7 @@ class Stage3():
         for trigram in trigram_list:# if self.string_found(bigram)]
             first_word = trigram[0].strip()
             second_word = trigram[1].strip()
-            third_word = trigram[1].strip()
+            third_word = trigram[2].strip()
             if ""==first_word or ""==second_word or ""==third_word:
                 pass
             else:
