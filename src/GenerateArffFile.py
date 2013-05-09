@@ -115,7 +115,7 @@ class GenerateArff():
                 #step 2 - check bigrams
                 self.checkBigrams(review, featureset)
                 #step 3 - check trigrams
-                #self.checkTrigrams(review, featureset)
+                self.checkTrigrams(review, featureset)
                 #step 4 - check additional features
                 self.checkAdditionalFeatures(review, featureset)
                 #step 5 -- apply business Logic
