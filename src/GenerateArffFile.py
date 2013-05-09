@@ -90,7 +90,7 @@ class GenerateArff():
         featuresCollection = self.db[self.const.COLLECTION_FEATURES_CLEAN]
         try:
             for feature in featuresCollection.find():
-                self.features.append(feature["word"])
+                self.features.append(feature["word"].lower())
             print "Finished Loading Features, number of features loaded", len(self.features)
         except:
             print "Error: Loading features. \n Reason: ",sys.exc_info()
