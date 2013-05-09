@@ -13,7 +13,7 @@ class CleanFeatures:
         featuresCollection = self.db[self.const.COLLECTION_FEATURES]
         try:
             for feature in featuresCollection.find():
-                features.append(feature["word"])
+                features.append(feature["word"].lower())
             print "Finished Loading Features"
             return features
         except:
@@ -36,10 +36,10 @@ class CleanFeatures:
         try:
             set = Set([])
             for feature in features:
-                if feature in dictionary:
+                if feature.lower() in dictionary:
                     set.add(dictionary[feature])
                 else:
-                    set.add(feature)
+                    set.add(feature.lower())
             return set 
         except:
             print "Error Cleaning Features. Reason: ",sys.exc_info()
