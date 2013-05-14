@@ -91,7 +91,7 @@ class Xls2mongo():
     def dropCollections(self):
         do_not_delete = ['review','system.indexes','user',
                          'checkin','business'
-                         ,'trainset','testset']
+                         ,'trainset','testset', 'features','features_clean']
         for name in self.db.collection_names():
             
             if name in do_not_delete:
