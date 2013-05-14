@@ -39,12 +39,12 @@ class Constants():
     DELIMITER_SYNONYMS = ":"
     
     #configurations for script
-    GENERATE_TRIGRAMS = False
+    GENERATE_TRIGRAMS = True
     GENERATE_BIGRAMS = True
-    GENERATE_UNIGRAMS = False
+    GENERATE_UNIGRAMS = True
     GENERATE_BIGRAMS_WITH_STOP_WORDS = False
     GENERATE_TRIGRAMS_WITH_STOP_WORDS = True
-    LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO =False
+    LOAD_ANNOTATED_REVIEWS_FROM_FILE_TO_MONGO =True
     Mongo_Host = "localhost"
     DB_YELP_MONGO = "yelp"
     

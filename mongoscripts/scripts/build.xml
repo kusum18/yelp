@@ -1,0 +1,35 @@
+<?xml version="1.0" ?> 
+<project name="SupportVectorMachine" default="compile">
+
+	<path id="compile.classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="build/classes/resources/data"/>
+		<mkdir dir="dist" />
+	</target>
+	
+	<target name="compile" depends="init" >
+		<javac destdir="build/classes" debug="true" srcdir="src">
+			<classpath refid="compile.classpath"/>
+			<compilerarg line="-J-Xms512m -J-Xmx1024m" />
+		</javac>
+	</target>
+	
+	<target name="copy" depends="init">
+		<copy todir="build/classes/resources/data">
+		    <fileset dir="./resources/data">
+		      <exclude name="**/*.java"/>
+		    </fileset>
+	  	</copy>
+	</target>
+	
+	<target name="clean">
+		<delete dir="dist" />
+		<delete dir="build" />
+	</target>
+	
+</project>
