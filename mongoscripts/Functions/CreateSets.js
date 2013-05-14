@@ -105,6 +105,40 @@ var detectNegetiveRows = function(){
 	//});
 	print(db.useless_reviews.find().count() + " rows deleted ");
 }
+
+var detectSelectedClasses = function(){
+	db.selectedClasses.drop();
+	print("detectSelectedClasses");
+	db.trainset.find().forEach(function(doc){
+		if ((doc['Food']==2 || doc['Food']==0) && 
+        	//(doc['Service']==2 || doc['Service']==0)  &&
+        	(doc['Service']==1 || doc['Ambiance']==1 || doc['Deals']==1 || doc['Price']==1)
+        	){
+        	db.selectedClasses.insert(doc)
+        }
+	});
+	print(db.selectedClasses.find().count() + " rows found");
+}
+
+
+detectSelectedClasses();
+
+var detectServiceRev = function(){
+	db.serviceRev.drop();
+	print("detectSelectedClasses");
+	db.selectedClasses.find().forEach(function(doc){
+		if ((doc['Food']==2 || doc['Food']==0) && 
+        	(doc['Ambiance']==2 || doc['Ambiance']==0)  &&
+        	(doc['Service']==1)  &&
+        	(doc['Deals']==2 || doc['Deals']==0)  &&
+        	(doc['Price']==2 || doc['Price']==0)){
+        	db.serviceRev.insert(doc)
+        }
+	});
+	print(db.serviceRev.find().count() + " rows found");
+}
+detectServiceRev();
+
 //detectNegetiveRows();
 
 var makeSets = function(){
@@ -112,7 +146,7 @@ var makeSets = function(){
 	//detectNegetiveRows();
 	checkdups();
 	addRandom();
-	makeTestSet();
+	//makeTestSet();
 	makeTrainSet();
 }
 
