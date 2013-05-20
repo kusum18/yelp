@@ -92,6 +92,44 @@ var create_new_trainset = function(){
 	print("trainset collection size: "+ db.trainset_boosted.find().count());
 }
 
+var removeEmptyRows = function(collection){
+	print("deleting empty rows or useless rows");
+	db.useless_reviews.drop();
+	db.usefull_reviews.drop();
+	db[collection].find().forEach(function(doc){
+		if ((doc['Food']==2 || doc['Food']==0 || doc['Foods']==-1) && 
+        	(doc['Ambiance']==2 || doc['Ambiance']==0 || doc['Ambiance']==-1)  &&
+        	(doc['Service']==2 || doc['Service']==0 || doc['Service']==-1)  &&
+        	(doc['Deals']==2 || doc['Deals']==0 || doc['Deals']==-1)  &&
+        	(doc['Price']==2 || doc['Price']==0 || doc['Price']==-1)){
+        	db.useless_reviews.insert(doc)
+        }
+        else{
+        	db.usefull_reviews.insert(doc)
+        }
+	});
+	db.useless_reviews.find().forEach(function(doc){
+		db[collection].remove({"reviewId":doc["reviewId"]});
+	});
+	print(db.useless_reviews.find().count() + " rows deleted ");
+	print(db[collection].find().count() + " size of " + collection + " collection")
+}
+
+var create_backup = function(collection){
+	db[collection].find().forEach(function(doc){
+		db[collection + "_bkup"].insert(doc);
+	});
+	print("bkup collection size: "+ db[collection + "_bkup"].find().count());
+}
+
+var retreive_from_backup = function(collection){
+	db[collection].drop();
+	db[collection+"_bkup"].find().forEach(function(doc){
+		db[collection].insert(doc);
+	});
+	print("collection size: "+ db[collection].find().count());
+}
+
 
 
 var boostData = function(){
@@ -101,5 +139,8 @@ var boostData = function(){
 	remove_service_only_from_PDAS();
 	create_trainset_boosted();
 	create_new_trainset();
+	//create_backup('testset')
+	removeEmptyRows('trainset');
+
 }
 boostData();
