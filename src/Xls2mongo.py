@@ -14,15 +14,19 @@ from Constants import Constants
 class Xls2mongo():
     const = Constants()
     
-    def insert(self,reviews):
+    def insert(self,reviews,file_path):
         Db = self.db
         AnnotatedReviews = Db[self.const.COLLECTION_ANNOTATED_REVIEWS];
         RejectReviews = Db[self.const.COLLECTION_REJECTED_REVIEWS]
+        row = 2
         for review in reviews:
+            row +=1
             try:
                 review,isValid = self.checkIfValidReview(review)
                 value = json.dumps(review, default=lambda x:x.__dict__)
                 value = json.loads(value)
+                value['file']=file_path
+                value['sheet_row']=row
                 if isValid:
                     AnnotatedReviews.insert(value)
                 else:
@@ -135,7 +139,7 @@ class Xls2mongo():
                     file_path = os.path.join(destinationPath,file)
                     print file_path
                     reviews=self.start(file_path)
-                    self.insert(reviews)
+                    self.insert(reviews,file_path)
         except:
             print sys.exc_info()
         print ("loading files done")

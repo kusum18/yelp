@@ -120,8 +120,6 @@ var detectSelectedClasses = function(){
 }
 
 
-detectSelectedClasses();
-
 var detectServiceRev = function(){
 	db.serviceRev.drop();
 	print("detectSelectedClasses");
@@ -137,7 +135,6 @@ var detectServiceRev = function(){
 	});
 	print(db.serviceRev.find().count() + " rows found");
 }
-detectServiceRev();
 
 //detectNegetiveRows();
 
